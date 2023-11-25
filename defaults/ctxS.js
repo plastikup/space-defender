@@ -11,15 +11,17 @@ export const ctxS = {
 		ctx.drawImage(src, sx, sy, sw, sh, dx, dy, dw, dh);
 		ctx.globalAlpha = 1;
 	},
-	fillPattern: (src, x, y, w, h, shift, opacity = 1) => {
+	fillPattern: (src, x, y, w, h, shift, gxshift, gyshift, opacity = 1) => {
+		ctx.translate(gxshift, gyshift);
 		ctx.globalAlpha = opacity;
 		let pattern = ctx.createPattern(src, 'repeat');
-		for (let i = 0; i < Math.ceil(w / src.width); i++) {
-			pattern.setTransform(new DOMMatrix([1, 0, 0, 1, 0, i * -125]));
+		for (let i = -1; i < Math.ceil(w / src.width) + 1; i++) {
+			pattern.setTransform(new DOMMatrix([1, 0, 0, 1, 0, i * -shift]));
 
-			ctx.fillStyle = pattern//.setTransform(matrix.translateSelf(0, -10 * i))
-			ctx.fillRect(i * src.width, i * shift, src.width, canvas.height);
+			ctx.fillStyle = pattern;
+			ctx.fillRect(i * src.width, -src.height * 2, src.width, canvas.height + src.height * 4);
 		}
 		ctx.globalAlpha = 1;
+		ctx.translate(-gxshift, -gyshift);
 	},
 };
