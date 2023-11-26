@@ -67,12 +67,19 @@ function main() {
 	ctxS.fillRect(0, 0, canvas.width, canvas.height, theme.primary_background_color + '33');
 
 	// background
-	ctxS.drawImage(asset.backgroundImage, 0, 0, asset.backgroundImage.width, asset.backgroundImage.height, -128 * (player.x / canvas.width), -128 * (player.y / canvas.height), canvas.width + 128, canvas.height + 128);
+	ctxS.drawImage(asset.backgroundImage, 0, 0, asset.backgroundImage.width, asset.backgroundImage.height, -128 * (player.x / canvas.width), -128 * (player.y / canvas.height), canvas.width + 128, canvas.height + 128, 0.5);
 
 	// player
 	player = exePlayer(player, keyPresses, mouse, asset);
 
 	requestAnimationFrame(main);
+}
+
+function init() {
+	player.w = asset.player.width;
+	player.h = asset.player.height;
+
+	main();
 }
 
 /* ~~~ PROPERLY LOAD MULTIMEDIA ~~~ */
@@ -88,7 +95,7 @@ function loadAssets() {
 		multimedia.onload = () => {
 			if (--totalNbImgs <= 0) {
 				ctxS.fillRect(0, 0, canvas.width, canvas.height, theme.primary_background_color);
-				main();
+				init();
 			}
 		};
 	});
