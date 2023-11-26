@@ -64,13 +64,16 @@ document.addEventListener('keyup', (e) => {
 /* ~~~~~~~~~~~~~~~ */
 
 function main() {
-	ctxS.fillRect(0, 0, canvas.width, canvas.height, theme.primary_background_color + '33');
+	//ctxS.fillRect(0, 0, canvas.width, canvas.height, theme.primary_background_color + '33');
 
 	// background
 	ctxS.drawImage(asset.backgroundImage, 0, 0, asset.backgroundImage.width, asset.backgroundImage.height, -128 * (player.x / canvas.width), -128 * (player.y / canvas.height), canvas.width + 128, canvas.height + 128, 0.5);
 
 	// player
 	player = exePlayer(player, keyPresses, mouse, asset);
+
+	// cursor
+	ctxS.drawImage(asset.crosshair, 0, 0, asset.crosshair.width, asset.crosshair.height, mouse.x - 16, mouse.y - 16, 32, 32);
 
 	requestAnimationFrame(main);
 }
@@ -86,6 +89,7 @@ function init() {
 let asset = {
 	backgroundImage: new Image(),
 	player: new Image(),
+	crosshair: new Image(),
 };
 
 function loadAssets() {
@@ -103,6 +107,7 @@ function loadAssets() {
 	// assets sources:
 	asset.backgroundImage.src = './assets/background/background.png';
 	asset.player.src = './assets/ships/ship.png';
+	asset.crosshair.src = './assets/crosshair.png';
 }
 
 loadAssets();
