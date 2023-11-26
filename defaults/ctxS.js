@@ -6,9 +6,13 @@ export const ctxS = {
 		ctx.fillStyle = fillStyle;
 		ctx.fillRect(x, y, w, h);
 	},
-	drawImage: function (src, sx, sy, sw, sh, dx, dy, dw, dh, opacity = 1) {
+	drawImage: function (src, sx, sy, sw, sh, dx, dy, dw, dh, opacity = 1, a = 0, axisRotX = 0, axisRotY = 0) {
 		ctx.globalAlpha = opacity;
-		ctx.drawImage(src, sx, sy, sw, sh, dx, dy, dw, dh);
+		ctx.translate(dx, dy);
+		ctx.rotate(a);
+		ctx.drawImage(src, sx, sy, sw, sh, -axisRotX, -axisRotY, dw + axisRotX / 2, dh + axisRotY / 2);
+		ctx.rotate(-a);
+		ctx.translate(-dx, -dy);
 		ctx.globalAlpha = 1;
 	},
 	fillPattern: (src, x, y, w, h, shift, gxshift, gyshift, opacity = 1) => {
