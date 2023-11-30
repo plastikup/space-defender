@@ -73,13 +73,13 @@ class Projectile {
 	move() {
 		this.x += Math.cos(this.a - Math.PI / 2) * this.v;
 		this.y += Math.sin(this.a - Math.PI / 2) * this.v;
-		if (this.type == 1) this.v = Math.max(this.v * 0.99, 2);
+		if (this.type == 1) this.v = Math.max(this.v * 0.98, 3);
 	}
 	isOutsideCanvas() {
 		return Math.abs(this.x - canvas.width / 2) > canvas.width / 2 + this.uri.width * 2 || Math.abs(this.y - canvas.height / 2) > canvas.height / 2 + this.uri.height * 2;
 	}
 	isTooFar() {
-		return Math.sqrt((this.x - this.startX) ** 2 + (this.y - this.startY) ** 2) > (this.type == 1 ? 400 : 800);
+		return Math.sqrt((this.x - this.startX) ** 2 + (this.y - this.startY) ** 2) > (this.type == 1 ? 500 : 900);
 	}
 }
 
@@ -92,11 +92,11 @@ document.addEventListener('mousemove', (e) => {
 	mouse.y = e.clientY;
 });
 document.addEventListener('mousedown', (e) => {
-	if (e.button == 0) projectilesList.push(new Projectile(player.x, player.y, player.a, 12, asset.projectiles, 16, 16, 0));
+	if (e.button == 0) projectilesList.push(new Projectile(player.x, player.y, player.a, 10, asset.projectiles, 16, 16, 0));
 	else if (e.button == 2) {
 		const rando = Math.random() - 0.5;
-		projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 8, asset.projectiles, 2, 16, 1, -1));
-		projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 8, asset.projectiles, 2, 16, 1, 1));
+		projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, -1));
+		projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, 1));
 	}
 });
 document.addEventListener('contextmenu', (event) => {
