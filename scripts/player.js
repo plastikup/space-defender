@@ -1,14 +1,14 @@
 import { ctxS } from '../defaults/ctxS.js';
 import { canvas } from '../defaults/init.js';
 
-export function exePlayer(player, keyPresses, mouse, asset) {
+export function exePlayer(player, keyPresses, mouse, asset, frame) {
 	// update player xy
 	[player.x, player.ox] = [player.x + player.vx, player.x];
 	[player.y, player.oy] = [player.y + player.vy, player.y];
 
 	// move player
-	player.vx = player.vx * 0.94 + ((keyPresses[39] || keyPresses[68]) - (keyPresses[37] || keyPresses[65])) * 0.6;
-	player.vy = player.vy * 0.94 + ((keyPresses[40] || keyPresses[83]) - (keyPresses[38] || keyPresses[87])) * 0.6;
+	player.vx = player.vx * 0.85 + ((keyPresses[39] || keyPresses[68]) - (keyPresses[37] || keyPresses[65]));
+	player.vy = player.vy * 0.85 + ((keyPresses[40] || keyPresses[83]) - (keyPresses[38] || keyPresses[87]));
 
 	// bounce on wall
 	if (Math.abs(player.x - canvas.width / 2) > canvas.width / 2 - player.w / 2) {
@@ -35,7 +35,7 @@ export function exePlayer(player, keyPresses, mouse, asset) {
 
 	// draw player
 	ctxS.drawImage(asset.player, (player.frame % 4) * 16, Math.floor(player.frame / 4) * 24, 16, 24, player.x, player.y, 60, 90, 1, player.a, 40, 35);
-	player.frame = Math.floor(Date.now() / 100) % 8;
+	player.frame = frame % 8;
 
 	return player;
 }
