@@ -48,15 +48,18 @@ const keyPresses = {
 
 let projectilesList = [];
 class Projectile {
-	constructor(x, y, a, v, uri, sx, sy, type) {
+	constructor(x, y, a, v, uri, sx, sy, type, dir = 0) {
 		this.x = x;
 		this.y = y;
+		this.startX = this.x;
+		this.startY = this.y;
 		this.a = a;
 		this.v = v;
 		this.uri = uri;
 		this.sx = sx;
 		this.sy = sy;
 		this.type = type;
+		this.dir = dir;
 		this.creationTime = Date.now();
 	}
 
@@ -64,16 +67,19 @@ class Projectile {
 		console.log(`Hello, my name is undefined`);
 	}
 	drawImage() {
-		let sinus = Math.cos((Date.now() - this.creationTime) / 80 + Math.PI / 8) * 25 * (this.type == 1);
+		let sinus = Math.cos((Date.now() - this.creationTime) / 80 + Math.PI / 8) * 25 * (this.type == 1) * this.dir;
 		ctxS.drawImage(this.uri, this.sx, this.sy, 16, 16, this.x + sinus * Math.cos(this.a), this.y + sinus * Math.sin(this.a), this.uri.width, this.uri.height, 1, this.a, this.uri.width / 2, this.uri.height / 2);
 	}
 	move() {
 		this.x += Math.cos(this.a - Math.PI / 2) * this.v;
 		this.y += Math.sin(this.a - Math.PI / 2) * this.v;
-		//if (this.type == 1) this.v = Math.max(this.v * 0.97, 8);
+		if (this.type == 1) this.v = Math.max(this.v * 0.99, 2);
 	}
 	isOutsideCanvas() {
 		return Math.abs(this.x - canvas.width / 2) > canvas.width / 2 + this.uri.width * 2 || Math.abs(this.y - canvas.height / 2) > canvas.height / 2 + this.uri.height * 2;
+	}
+	isTooFar() {
+		return Math.sqrt((this.x - this.startX) ** 2 + (this.y - this.startY) ** 2) > (this.type == 1 ? 400 : 800);
 	}
 }
 
@@ -87,7 +93,11 @@ document.addEventListener('mousemove', (e) => {
 });
 document.addEventListener('mousedown', (e) => {
 	if (e.button == 0) projectilesList.push(new Projectile(player.x, player.y, player.a, 12, asset.projectiles, 16, 16, 0));
-	else if (e.button == 2) projectilesList.push(new Projectile(player.x, player.y, player.a + 0.25 * (Math.random() - 0.5), 6, asset.projectiles, 2, 16, 1));
+	else if (e.button == 2) {
+		const rando = Math.random() - 0.5;
+		projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 8, asset.projectiles, 2, 16, 1, -1));
+		projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 8, asset.projectiles, 2, 16, 1, 1));
+	}
 });
 document.addEventListener('contextmenu', (event) => {
 	event.preventDefault();
