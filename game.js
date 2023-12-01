@@ -98,6 +98,7 @@ document.addEventListener('mousedown', (e) => {
 		projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, -1));
 		projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, 1));
 	}
+	if (asset.music.withoutFear.paused) asset.music.withoutFear.play();
 });
 document.addEventListener('contextmenu', (event) => {
 	event.preventDefault();
@@ -145,18 +146,24 @@ let asset = {
 	player: new Image(),
 	crosshair: new Image(),
 	projectiles: new Image(),
+	music: {
+		bravePilots: new Audio('./assets/music/Brave Pilots.ogg'),
+		withoutFear: new Audio('./assets/music/Without Fear.ogg'),
+	},
 };
 
 function loadAssets() {
 	let totalNbImgs = Object.keys(asset).length;
 
 	Object.entries(asset).forEach(([, multimedia]) => {
-		multimedia.onload = () => {
+		function checkKickstart() {
 			if (--totalNbImgs <= 0) {
 				ctxS.fillRect(0, 0, canvas.width, canvas.height, theme.primary_background_color);
 				init();
 			}
-		};
+		}
+		if (typeof multimedia !== typeof {}) multimedia.onload = () => checkKickstart();
+		else checkKickstart();
 	});
 
 	// assets sources:
