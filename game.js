@@ -4,8 +4,11 @@
 import { ctxS } from './defaults/ctxS.js'; // ctx functions simplified
 import { default as theme } from './defaults/theme.json' assert { type: 'json' }; // JSON file containing color theme
 
+import { Projectile, EnemyT1, EnemyT2, EnemyT3 } from './defaults/classes.js';
+
 import { exePlayer } from './scripts/player.js';
 import { projectiles } from './scripts/projectiles.js';
+import { enemies } from './scripts/enemies.js';
 
 /* ~~~ canvas initialisation ~~~ */
 import { canvas, ctx } from './defaults/init.js';
@@ -14,10 +17,14 @@ canvas.height = innerHeight;
 ctx.imageSmoothingEnabled = false;
 
 /* ~~~ assets ~~~ */
-// none atm
+import { asset } from './scripts/loadAssets.js';
 
 /* ~~~ game variables ~~~ */
 let frame;
+let projectilesList = [];
+let enemiesList = [];
+
+enemiesList.push(new EnemyT1(200, 200), new EnemyT2(300, 300), new EnemyT3(400, 400));
 
 const mouse = {
 	x: 0,
@@ -46,43 +53,6 @@ const keyPresses = {
 	87: false,
 };
 
-let projectilesList = [];
-class Projectile {
-	constructor(x, y, a, v, uri, sx, sy, type, dir = 0) {
-		this.x = x;
-		this.y = y;
-		this.startX = this.x;
-		this.startY = this.y;
-		this.a = a;
-		this.v = v;
-		this.uri = uri;
-		this.sx = sx;
-		this.sy = sy;
-		this.type = type;
-		this.dir = dir;
-		this.creationTime = Date.now();
-	}
-
-	introduce() {
-		console.log(`Hello, my name is undefined`);
-	}
-	drawImage() {
-		let sinus = Math.cos((Date.now() - this.creationTime) / 80 + Math.PI / 8) * 25 * (this.type == 1) * this.dir;
-		ctxS.drawImage(this.uri, this.sx, this.sy, 16, 16, this.x + sinus * Math.cos(this.a), this.y + sinus * Math.sin(this.a), this.uri.width, this.uri.height, 1, this.a, this.uri.width / 2, this.uri.height / 2);
-	}
-	move() {
-		this.x += Math.cos(this.a - Math.PI / 2) * this.v;
-		this.y += Math.sin(this.a - Math.PI / 2) * this.v;
-		if (this.type == 1) this.v = Math.max(this.v * 0.98, 3);
-	}
-	isOutsideCanvas() {
-		return Math.abs(this.x - canvas.width / 2) > canvas.width / 2 + this.uri.width * 2 || Math.abs(this.y - canvas.height / 2) > canvas.height / 2 + this.uri.height * 2;
-	}
-	isTooFar() {
-		return Math.sqrt((this.x - this.startX) ** 2 + (this.y - this.startY) ** 2) > (this.type == 1 ? 500 : 900);
-	}
-}
-
 /* ~~~~~~~~~~~~~~~ */
 /* ~~~~~~~~~~~~~~~ */
 /* ~~~~~~~~~~~~~~~ */
@@ -98,7 +68,7 @@ document.addEventListener('mousedown', (e) => {
 		projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, -1));
 		projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, 1));
 	}
-	if (asset.music.withoutFear.paused) asset.music.withoutFear.play();
+	if (asset.music.bravePilots.paused) asset.music.bravePilots.play();
 });
 document.addEventListener('contextmenu', (event) => {
 	event.preventDefault();
@@ -124,6 +94,9 @@ function main() {
 	// projectiles
 	projectilesList = projectiles(projectilesList);
 
+	// enemies
+	enemiesList = enemies(enemiesList, player, frame);
+
 	// player
 	player = exePlayer(player, keyPresses, mouse, asset, frame);
 
@@ -137,41 +110,10 @@ function init() {
 	player.w = asset.player.width;
 	player.h = asset.player.height;
 
+	console.info('ready');
+
 	main();
 }
 
-/* ~~~ PROPERLY LOAD MULTIMEDIA ~~~ */
-let asset = {
-	backgroundImage: new Image(),
-	player: new Image(),
-	crosshair: new Image(),
-	projectiles: new Image(),
-	music: {
-		bravePilots: new Audio('./assets/music/Brave Pilots.ogg'),
-		withoutFear: new Audio('./assets/music/Without Fear.ogg'),
-	},
-};
-
-function loadAssets() {
-	let totalNbImgs = Object.keys(asset).length;
-
-	Object.entries(asset).forEach(([, multimedia]) => {
-		function checkKickstart() {
-			if (--totalNbImgs <= 0) {
-				ctxS.fillRect(0, 0, canvas.width, canvas.height, theme.primary_background_color);
-				init();
-			}
-		}
-		if (typeof multimedia !== typeof {}) multimedia.onload = () => checkKickstart();
-		else checkKickstart();
-	});
-
-	// assets sources:
-	asset.backgroundImage.src = './assets/background/background.png';
-	asset.player.src = './assets/ships/ship.png';
-	asset.crosshair.src = './assets/crosshair.png';
-	asset.projectiles.src = './assets/ships/projectiles.png';
-}
-
-loadAssets();
+init();
 console.log(theme);
