@@ -11,22 +11,22 @@ export function exePlayer(player, keyPresses, mouse, asset, frame) {
 	player.vy = player.vy * 0.825 + ((keyPresses[40] || keyPresses[83]) - (keyPresses[38] || keyPresses[87]));
 
 	// bounce on wall
-	if (Math.abs(player.x - canvas.width / 2) > canvas.width / 2 - player.w / 2) {
+	if (Math.abs(player.x - canvas.width / 2) > canvas.width / 2 - player.collisionRadius) {
 		if (player.x < canvas.width / 2) {
 			player.vx = Math.max(-player.vx, player.vx) * 1.5;
-			player.x = player.w / 2;
+			player.x = player.collisionRadius;
 		} else {
 			player.vx = Math.min(-player.vx, player.vx) * 1.5;
-			player.x = canvas.width - player.w / 2;
+			player.x = canvas.width - player.collisionRadius;
 		}
 	}
-    if (Math.abs(player.y - canvas.height / 2) > canvas.height / 2 - player.h / 2) {
+    if (Math.abs(player.y - canvas.height / 2) > canvas.height / 2 - player.collisionRadius) {
 		if (player.y < canvas.height / 2) {
 			player.vy = Math.max(-player.vy, player.vy) * 1.5;
-			player.y = player.h / 2;
+			player.y = player.collisionRadius;
 		} else {
 			player.vy = Math.min(-player.vy, player.vy) * 1.5;
-			player.y = canvas.height - player.h / 2;
+			player.y = canvas.height - player.collisionRadius;
 		}
 	}
 
