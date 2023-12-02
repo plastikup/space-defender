@@ -150,9 +150,9 @@ export class EnemyT2 {
 
 		return player;
 	}
-	shoot(frame, projectilesList) {
+	shoot(_, projectilesList) {
 		if (Math.floor((Date.now() + this.meta.randomShootingTimingShift) / 2000) % 4 == 0 && Date.now() - this.meta.lastProjectile > 100) {
-			projectilesList.push(new Projectile(this.x, this.y, this.a + Math.PI / 2 + 0.4*(Math.random()-0.5), 9, asset.projectiles, 16, 0, 0));
+			projectilesList.push(new Projectile(this.x, this.y, this.a + Math.PI / 2 + 0.5 * (Math.random() - 0.5), 10, asset.projectiles, 16, 0, 0));
 			this.v -= 5;
 			this.meta.lastProjectile = Date.now();
 		}

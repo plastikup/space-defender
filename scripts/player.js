@@ -7,8 +7,8 @@ export function exePlayer(player, keyPresses, mouse, asset, frame) {
 	[player.y, player.oy] = [player.y + player.vy, player.y];
 
 	// move player
-	player.vx = player.vx * 0.85 + ((keyPresses[39] || keyPresses[68]) - (keyPresses[37] || keyPresses[65]));
-	player.vy = player.vy * 0.85 + ((keyPresses[40] || keyPresses[83]) - (keyPresses[38] || keyPresses[87]));
+	player.vx = player.vx * 0.825 + ((keyPresses[39] || keyPresses[68]) - (keyPresses[37] || keyPresses[65]));
+	player.vy = player.vy * 0.825 + ((keyPresses[40] || keyPresses[83]) - (keyPresses[38] || keyPresses[87]));
 
 	// bounce on wall
 	if (Math.abs(player.x - canvas.width / 2) > canvas.width / 2 - player.w / 2) {
