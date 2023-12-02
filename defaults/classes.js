@@ -45,6 +45,9 @@ export class EnemyT1 {
 		this.acc = 0.4;
 		this.uri = asset.enemyT1;
 
+		this.bx = 0;
+		this.by = 0;
+
 		this.meta = {
 			displaySizeW: 48,
 			displaySizeH: 48,
@@ -76,6 +79,9 @@ export class EnemyT1 {
 		this.v *= 0.9;
 		return player;
 	}
+	wallBounce() {
+		[this.x, this.y, this.bx, this.by] = wallBounce_gb(this);
+	}
 	collide(player) {
 		[player.vx, player.vy] = [Math.cos(this.a) * 5, Math.sin(this.a) * 5];
 		this.ma = this.a;
@@ -102,6 +108,9 @@ export class EnemyT2 {
 		this.v = 0;
 		this.acc = 0.5;
 		this.uri = asset.enemyT2;
+
+		this.bx = 0;
+		this.by = 0;
 
 		this.meta = {
 			displaySizeW: 96,
@@ -143,6 +152,9 @@ export class EnemyT2 {
 		this.y += Math.sin(this.ma) * this.v;
 		return player;
 	}
+	wallBounce() {
+		[this.x, this.y, this.bx, this.by] = wallBounce_gb(this);
+	}
 	collide(player) {
 		[player.vx, player.vy] = [Math.cos(this.a) * 5, Math.sin(this.a) * 5];
 		this.ma = this.a;
@@ -170,6 +182,9 @@ export class EnemyT3 {
 		this.acc = 0.6;
 		this.uri = asset.enemyT3;
 
+		this.bx = 0;
+		this.by = 0;
+
 		this.meta = {
 			displaySizeW: 96,
 			displaySizeH: 96,
@@ -194,6 +209,9 @@ export class EnemyT3 {
 
 		return player;
 	}
+	wallBounce() {
+		[this.x, this.y, this.bx, this.by] = wallBounce_gb(this);
+	}
 	shoot(frame, projectilesList) {
 		/*
 		if (frame % 4 == 0 && Date.now() - this.meta.lastProjectile > 100) {
@@ -204,4 +222,31 @@ export class EnemyT3 {
 		*/
 		return projectilesList;
 	}
+}
+
+function wallBounce_gb(el) {
+	if (Math.abs(el.x - canvas.width / 2) > canvas.width / 2 - el.meta.collisionRadius) {
+		if (el.x < canvas.width / 2) {
+			el.bx = 10;
+			el.x = el.meta.collisionRadius;
+		} else {
+			el.bx = -10;
+			el.x = canvas.width - el.meta.collisionRadius;
+		}
+	}
+	if (Math.abs(el.y - canvas.height / 2) > canvas.height / 2 - el.meta.collisionRadius) {
+		if (el.y < canvas.height / 2) {
+			el.by = 10;
+			el.y = el.meta.collisionRadius;
+		} else {
+			el.by = -10;
+			el.y = canvas.height - el.meta.collisionRadius;
+		}
+	}
+	el.bx *= 0.9;
+	el.by *= 0.9;
+	el.x += el.bx;
+	el.y += el.by;
+
+	return [el.x, el.y, el.bx, el.by];
 }
