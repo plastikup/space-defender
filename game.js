@@ -41,6 +41,7 @@ let player = {
 	h: undefined,
 	a: 0,
 	frame: 0,
+	collisionRadius: 32,
 };
 const keyPresses = {
 	37: false,
@@ -95,7 +96,7 @@ function main() {
 	projectilesList = projectiles(projectilesList);
 
 	// enemies
-	enemiesList = enemies(enemiesList, player, frame);
+	[enemiesList, player, projectilesList] = enemies(enemiesList, player, projectilesList, frame);
 
 	// player
 	player = exePlayer(player, keyPresses, mouse, asset, frame);

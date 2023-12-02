@@ -18,9 +18,6 @@ export class Projectile {
 		this.creationTime = Date.now();
 	}
 
-	introduce() {
-		console.log(`Hello, my name is undefined`);
-	}
 	drawImage() {
 		let sinus = Math.cos((Date.now() - this.creationTime) / 80 + Math.PI / 8) * 25 * (this.type == 1) * this.dir;
 		ctxS.drawImage(this.uri, this.sx, this.sy, 16, 16, this.x + sinus * Math.cos(this.a), this.y + sinus * Math.sin(this.a), this.uri.width, this.uri.height, 1, this.a, this.uri.width / 2, this.uri.height / 2);
@@ -42,8 +39,10 @@ export class EnemyT1 {
 	constructor(x, y) {
 		this.x = x;
 		this.y = y;
+		this.ma = 0;
 		this.a = 0;
 		this.v = 0;
+		this.acc = 0.4;
 		this.uri = asset.enemyT1;
 
 		this.meta = {
@@ -51,16 +50,44 @@ export class EnemyT1 {
 			displaySizeH: 48,
 			ogSizeX: 16,
 			ogSizeY: 16,
-            rotShiftX: 56,
-            rotShiftY: 96,
+			rotShiftX: 56,
+			rotShiftY: 96,
+			lastProjectile: null,
+			collisionRadius: 24,
 		};
 	}
 
 	drawImage(frame) {
-		ctxS.drawImage(this.uri, frame * this.meta.ogSizeX, 0, this.meta.ogSizeX, this.meta.ogSizeY, this.x, this.y, this.meta.displaySizeW, this.meta.displaySizeH, 1, this.a, this.meta.rotShiftX / 2, this.meta.rotShiftY / 2);
+		ctxS.drawImage(this.uri, frame * this.meta.ogSizeX, 0, this.meta.ogSizeX, this.meta.ogSizeY, this.x, this.y, this.meta.displaySizeW, this.meta.displaySizeH, 1, this.a - Math.PI / 2, this.meta.rotShiftX / 2, this.meta.rotShiftY / 2);
 	}
 	pointAtPlayer(player) {
-		this.a = Math.atan2(this.y - player.y, this.x - player.x) + Math.PI / 2;
+		this.a = Math.atan2(player.y - this.y, player.x - this.x);
+	}
+	move(player) {
+		const dToP = Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2);
+		this.ma = Math.atan2(player.y - this.y, player.x - this.x);
+
+		if (dToP < this.meta.collisionRadius + player.collisionRadius) player = this.collide(player);
+
+		this.v = (this.v + this.acc) * 0.9;
+		this.x += Math.cos(this.ma) * this.v;
+		this.y += Math.sin(this.ma) * this.v;
+		return player;
+	}
+	collide(player) {
+		[player.vx, player.vy] = [Math.cos(this.a) * 5, Math.sin(this.a) * 5];
+		this.ma = this.a;
+		this.v = -10;
+
+		return player;
+	}
+	shoot(frame, projectilesList) {
+		if (frame % 10 == 0 && Date.now() - this.meta.lastProjectile > 100) {
+			projectilesList.push(new Projectile(this.x, this.y, this.ma + Math.PI / 2, 6, asset.projectiles, 2, 0, 0));
+			this.v -= 8;
+			this.meta.lastProjectile = Date.now();
+		}
+		return projectilesList;
 	}
 }
 
@@ -70,6 +97,7 @@ export class EnemyT2 {
 		this.y = y;
 		this.a = 0;
 		this.v = 0;
+		this.acc = 5;
 		this.uri = asset.enemyT2;
 
 		this.meta = {
@@ -77,8 +105,9 @@ export class EnemyT2 {
 			displaySizeH: 48,
 			ogSizeX: 32,
 			ogSizeY: 16,
-            rotShiftX: 64,
-            rotShiftY: 40,
+			rotShiftX: 64,
+			rotShiftY: 40,
+			lastProjectile: null,
 		};
 	}
 
@@ -88,6 +117,18 @@ export class EnemyT2 {
 	pointAtPlayer(player) {
 		this.a = Math.atan2(this.y - player.y, this.x - player.x) + Math.PI / 2;
 	}
+	move(player) {
+		const dToP = Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2);
+		const aToP = Math.atan2(this.y - player.y, this.x - player.x) + Math.PI / 2;
+
+		return player;
+	}
+	shoot(frame, projectilesList) {
+		if (frame % 10 == 0) {
+			this.v -= 1;
+		}
+		return projectilesList;
+	}
 }
 
 export class EnemyT3 {
@@ -96,6 +137,7 @@ export class EnemyT3 {
 		this.y = y;
 		this.a = 0;
 		this.v = 0;
+		this.acc = 5;
 		this.uri = asset.enemyT3;
 
 		this.meta = {
@@ -103,8 +145,9 @@ export class EnemyT3 {
 			displaySizeH: 96,
 			ogSizeX: 32,
 			ogSizeY: 32,
-            rotShiftX: 128,
-            rotShiftY: 224,
+			rotShiftX: 128,
+			rotShiftY: 224,
+			lastProjectile: null,
 		};
 	}
 
@@ -113,5 +156,17 @@ export class EnemyT3 {
 	}
 	pointAtPlayer(player) {
 		this.a = Math.atan2(this.y - player.y, this.x - player.x) + Math.PI / 2;
+	}
+	move(player) {
+		const dToP = Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2);
+		const aToP = Math.atan2(this.y - player.y, this.x - player.x) + Math.PI / 2;
+
+		return player;
+	}
+	shoot(frame, projectilesList) {
+		if (frame % 10 == 0) {
+			this.v -= 1;
+		}
+		return projectilesList;
 	}
 }
