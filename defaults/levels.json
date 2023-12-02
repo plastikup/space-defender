@@ -1,0 +1,14 @@
+{
+    "1": [
+        {
+            "enemyType": 1,
+            "startX": 30,
+            "startY": -20
+        },
+        {
+            "enemyType": 1,
+            "startX": 70,
+            "startY": -20
+        }
+    ]
+}

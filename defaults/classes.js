@@ -57,6 +57,8 @@ export class EnemyT1 {
 			rotShiftY: 96,
 			lastProjectile: null,
 			collisionRadius: 24,
+
+			hasWallCollisionYet: false,
 		};
 	}
 
@@ -80,6 +82,10 @@ export class EnemyT1 {
 		return player;
 	}
 	wallBounce() {
+		if (!this.hasWallCollisionYet) {
+			if (Math.abs(this.x - canvas.width / 2) < canvas.width / 2 - this.meta.collisionRadius * 1.5 && Math.abs(this.y - canvas.height / 2) < canvas.height / 2 - this.meta.collisionRadius * 1.5) this.hasWallCollisionYet = true;
+			else return;
+		}
 		[this.x, this.y, this.bx, this.by] = wallBounce_gb(this);
 	}
 	collide(player) {
@@ -123,6 +129,8 @@ export class EnemyT2 {
 			collisionRadius: 32,
 			randomDir: Math.round(Math.random()) * 0.5 - 0.25,
 			randomShootingTimingShift: Math.random() * 10000,
+
+			hasWallCollisionYet: false,
 		};
 	}
 
@@ -194,6 +202,8 @@ export class EnemyT3 {
 			rotShiftY: 224,
 			lastProjectile: null,
 			collisionRadius: 48,
+
+			hasWallCollisionYet: false,
 		};
 	}
 

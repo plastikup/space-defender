@@ -10,6 +10,8 @@ import { exePlayer } from './scripts/player.js';
 import { projectiles } from './scripts/projectiles.js';
 import { enemies } from './scripts/enemies.js';
 
+import { loadLevel } from './scripts/loadLevel.js';
+
 /* ~~~ canvas initialisation ~~~ */
 import { canvas, ctx } from './defaults/init.js';
 canvas.width = innerWidth;
@@ -24,7 +26,7 @@ let frame;
 let projectilesList = [];
 let enemiesList = [];
 
-enemiesList.push(new EnemyT2(200, 200), new EnemyT2(300, 300), new EnemyT2(400, 400));
+//enemiesList.push(new EnemyT2(200, 200), new EnemyT2(300, 300), new EnemyT2(400, 400));
 
 const mouse = {
 	x: 0,
@@ -110,6 +112,11 @@ function main() {
 function init() {
 	player.w = asset.player.width;
 	player.h = asset.player.height;
+
+	setTimeout(() => {
+		enemiesList = loadLevel(1, enemiesList);
+
+	}, 1000);
 
 	console.info('ready');
 
