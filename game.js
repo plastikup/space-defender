@@ -24,7 +24,7 @@ let frame;
 let projectilesList = [];
 let enemiesList = [];
 
-enemiesList.push(new EnemyT1(200, 200), new EnemyT2(300, 300), new EnemyT3(400, 400));
+enemiesList.push(new EnemyT2(200, 200), new EnemyT2(300, 300), new EnemyT2(400, 400));
 
 const mouse = {
 	x: 0,

@@ -64,14 +64,16 @@ export class EnemyT1 {
 		this.a = Math.atan2(player.y - this.y, player.x - this.x);
 	}
 	move(player) {
-		const dToP = Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2);
 		this.ma = Math.atan2(player.y - this.y, player.x - this.x);
 
+		const dToP = Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2);
 		if (dToP < this.meta.collisionRadius + player.collisionRadius) player = this.collide(player);
 
-		this.v = (this.v + this.acc) * 0.9;
+		this.v += this.acc;
 		this.x += Math.cos(this.ma) * this.v;
 		this.y += Math.sin(this.ma) * this.v;
+
+		this.v *= 0.9;
 		return player;
 	}
 	collide(player) {
@@ -95,9 +97,10 @@ export class EnemyT2 {
 	constructor(x, y) {
 		this.x = x;
 		this.y = y;
+		this.ma = 0;
 		this.a = 0;
 		this.v = 0;
-		this.acc = 5;
+		this.acc = 0.5;
 		this.uri = asset.enemyT2;
 
 		this.meta = {
@@ -108,24 +111,50 @@ export class EnemyT2 {
 			rotShiftX: 64,
 			rotShiftY: 40,
 			lastProjectile: null,
+			collisionRadius: 32,
+			randomDir: Math.round(Math.random()) * 0.5 - 0.25,
+			randomShootingTimingShift: Math.random() * 10000,
 		};
 	}
 
 	drawImage(frame) {
-		ctxS.drawImage(this.uri, frame * this.meta.ogSizeX, 0, this.meta.ogSizeX, this.meta.ogSizeY, this.x, this.y, this.meta.displaySizeW, this.meta.displaySizeH, 1, this.a, this.meta.rotShiftX, this.meta.rotShiftY);
+		ctxS.drawImage(this.uri, frame * this.meta.ogSizeX, 0, this.meta.ogSizeX, this.meta.ogSizeY, this.x, this.y, this.meta.displaySizeW, this.meta.displaySizeH, 1, this.a - Math.PI / 2, this.meta.rotShiftX, this.meta.rotShiftY);
 	}
 	pointAtPlayer(player) {
-		this.a = Math.atan2(this.y - player.y, this.x - player.x) + Math.PI / 2;
+		this.a = Math.atan2(player.y - this.y, player.x - this.x);
 	}
 	move(player) {
+		this.ma = Math.atan2(player.y - this.y, player.x - this.x);
+
 		const dToP = Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2);
-		const aToP = Math.atan2(this.y - player.y, this.x - player.x) + Math.PI / 2;
+		if (dToP < this.meta.collisionRadius + player.collisionRadius) player = this.collide(player);
+
+		if (dToP > 500 || Math.floor((Date.now() + this.meta.randomShootingTimingShift) / 2000) % 4 == 0) {
+			this.v += this.acc;
+		} else if (dToP > 300) {
+			this.ma = this.a + Math.PI / 2;
+			this.v += this.meta.randomDir;
+		} else {
+			this.v -= this.acc;
+		}
+
+		this.v = this.v * 0.9;
+		this.x += Math.cos(this.ma) * this.v;
+		this.y += Math.sin(this.ma) * this.v;
+		return player;
+	}
+	collide(player) {
+		[player.vx, player.vy] = [Math.cos(this.a) * 5, Math.sin(this.a) * 5];
+		this.ma = this.a;
+		this.v = -10;
 
 		return player;
 	}
 	shoot(frame, projectilesList) {
-		if (frame % 10 == 0) {
-			this.v -= 1;
+		if (Math.floor((Date.now() + this.meta.randomShootingTimingShift) / 2000) % 4 == 0 && Date.now() - this.meta.lastProjectile > 100) {
+			projectilesList.push(new Projectile(this.x, this.y, this.a + Math.PI / 2 + 0.4*(Math.random()-0.5), 9, asset.projectiles, 16, 0, 0));
+			this.v -= 5;
+			this.meta.lastProjectile = Date.now();
 		}
 		return projectilesList;
 	}
@@ -135,9 +164,10 @@ export class EnemyT3 {
 	constructor(x, y) {
 		this.x = x;
 		this.y = y;
+		this.ma = 0;
 		this.a = 0;
 		this.v = 0;
-		this.acc = 5;
+		this.acc = 0.6;
 		this.uri = asset.enemyT3;
 
 		this.meta = {
@@ -148,6 +178,7 @@ export class EnemyT3 {
 			rotShiftX: 128,
 			rotShiftY: 224,
 			lastProjectile: null,
+			collisionRadius: 48,
 		};
 	}
 
@@ -164,9 +195,13 @@ export class EnemyT3 {
 		return player;
 	}
 	shoot(frame, projectilesList) {
-		if (frame % 10 == 0) {
-			this.v -= 1;
+		/*
+		if (frame % 4 == 0 && Date.now() - this.meta.lastProjectile > 100) {
+			projectilesList.push(new Projectile(this.x, this.y, this.ma + Math.PI / 2, 6, asset.projectiles, 2, 0, 0));
+			this.v -= 8;
+			this.meta.lastProjectile = Date.now();
 		}
+		*/
 		return projectilesList;
 	}
 }
