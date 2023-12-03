@@ -3,7 +3,7 @@ import { canvas } from '../defaults/init.js';
 import { asset } from '../scripts/loadAssets.js';
 
 export class Projectile {
-	constructor(x, y, a, v, uri, sx, sy, type, dir = 0) {
+	constructor(x, y, a, v, uri, sx, sy, type, dir = 0, firedByPlayer = false) {
 		this.x = x;
 		this.y = y;
 		this.startX = this.x;
@@ -16,6 +16,7 @@ export class Projectile {
 		this.type = type;
 		this.dir = dir;
 		this.creationTime = Date.now();
+		this.firedByPlayer = firedByPlayer;
 	}
 
 	drawImage() {
@@ -26,6 +27,23 @@ export class Projectile {
 		this.x += Math.cos(this.a - Math.PI / 2) * this.s;
 		this.y += Math.sin(this.a - Math.PI / 2) * this.s;
 		if (this.type == 1) this.s = Math.max(this.s * 0.98, 3);
+	}
+	collide(projectilesList, enemiesList, player, bulletRaw) {
+		if (this.firedByPlayer) {
+			// hit enemy
+			enemiesList.forEach((el) => {
+				if (Math.sqrt((this.x - el.x) ** 2 + (this.y - el.y) ** 2) < el.meta.collisionRadius + 8) {
+					el.meta.health -= 1 - 0.25 * this.type;
+					projectilesList.splice(projectilesList.indexOf(bulletRaw), 1);
+				}
+			});
+		} else {
+			// hit player
+			if (Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2) < player.collisionRadius + 8) {
+				projectilesList.splice(projectilesList.indexOf(bulletRaw), 1);
+			}
+		}
+		return [projectilesList, enemiesList, player];
 	}
 	isOutsideCanvas() {
 		return Math.abs(this.x - canvas.width / 2) > canvas.width / 2 + this.uri.width * 2 || Math.abs(this.y - canvas.height / 2) > canvas.height / 2 + this.uri.height * 2;
@@ -59,6 +77,8 @@ export class EnemyT1 {
 			collisionRadius: 24,
 
 			hasWallCollisionYet: false,
+
+			health: 8,
 		};
 	}
 
@@ -131,6 +151,8 @@ export class EnemyT2 {
 			randomShootingTimingShift: Math.random() * 10000,
 
 			hasWallCollisionYet: false,
+
+			health: 12,
 		};
 	}
 
@@ -208,6 +230,8 @@ export class EnemyT3 {
 			collisionRadius: 48,
 
 			hasWallCollisionYet: false,
+
+			health: 25,
 		};
 	}
 

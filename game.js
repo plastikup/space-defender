@@ -67,11 +67,11 @@ document.addEventListener('mousemove', (e) => {
 	mouse.y = e.clientY;
 });
 document.addEventListener('mousedown', (e) => {
-	if (e.button == 0) projectilesList.push(new Projectile(player.x, player.y, player.a, 10, asset.projectiles, 16, 16, 0));
+	if (e.button == 0) projectilesList.push(new Projectile(player.x, player.y, player.a, 10, asset.projectiles, 16, 16, 0, 0, true));
 	else if (e.button == 2) {
 		const rando = Math.random() - 0.5;
-		projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, -1));
-		projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, 1));
+		projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, -1, true));
+		projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, 1, true));
 	}
 	if (asset.music.bravePilots.paused) asset.music.bravePilots.play();
 });
@@ -97,7 +97,7 @@ function main() {
 	ctxS.drawImage(asset.backgroundImage, 0, 0, asset.backgroundImage.width, asset.backgroundImage.height, -128 * (player.x / canvas.width), -128 * (player.y / canvas.height), canvas.width + 128, canvas.height + 128, 0.5);
 
 	// projectiles
-	projectilesList = projectiles(projectilesList);
+	[projectilesList, enemiesList, player] = projectiles(projectilesList, enemiesList, player);
 
 	// enemies
 	[enemiesList, player, projectilesList] = enemies(enemiesList, player, projectilesList, frame);
