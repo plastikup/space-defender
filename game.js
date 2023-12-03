@@ -4,13 +4,15 @@
 import { ctxS } from './defaults/ctxS.js'; // ctx functions simplified
 import { default as theme } from './defaults/theme.json' assert { type: 'json' }; // JSON file containing color theme
 
+import { default as levels } from '../defaults/levels.json' assert { type: 'json' };
+
 import { Projectile, EnemyT1, EnemyT2, EnemyT3 } from './defaults/classes.js';
 
 import { exePlayer } from './scripts/player.js';
 import { projectiles } from './scripts/projectiles.js';
 import { enemies } from './scripts/enemies.js';
 
-import { loadLevel } from './scripts/loadLevel.js';
+//import { loadLevel } from './scripts/loadLevel.js';
 
 /* ~~~ canvas initialisation ~~~ */
 import { canvas, ctx } from './defaults/init.js';
@@ -109,14 +111,21 @@ function main() {
 	requestAnimationFrame(main);
 }
 
+function loadLevel(levelID) {
+	levels[levelID].forEach((el) => {
+		setTimeout(() => {
+			if (el.enemyType == 3) enemiesList.push(new EnemyT3((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
+			else if (el.enemyType == 2) enemiesList.push(new EnemyT2((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
+			else enemiesList.push(new EnemyT1((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
+		}, el.timeout);
+	});
+}
+
 function init() {
 	player.w = asset.player.width;
 	player.h = asset.player.height;
 
-	setTimeout(() => {
-		enemiesList = loadLevel(3, enemiesList);
-
-	}, 0);
+	loadLevel(3);
 
 	console.info('ready');
 

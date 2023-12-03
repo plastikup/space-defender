@@ -3,46 +3,66 @@
         {
             "enemyType": 1,
             "startX": 20,
-            "startY": -25
+            "startY": -20,
+            "timeout": 0
         },
         {
             "enemyType": 1,
             "startX": 80,
-            "startY": -25
+            "startY": -20,
+            "timeout": 0
         }
     ],
     "2": [
         {
             "enemyType": 2,
             "startX": 50,
-            "startY": -100
+            "startY": -20,
+            "timeout": 0
         },
         {
             "enemyType": 1,
-            "startX": -25,
-            "startY": 25
+            "startX": -20,
+            "startY": 20,
+            "timeout": 5000
         },
         {
             "enemyType": 1,
-            "startX": 125,
-            "startY": 25
+            "startX": 120,
+            "startY": 20,
+            "timeout": 5000
         }
     ],
     "3": [
         {
             "enemyType": 2,
+            "startX": -20,
+            "startY": 75,
+            "timeout": 0
+        },
+        {
+            "enemyType": 2,
+            "startX": 120,
+            "startY": 75,
+            "timeout": 0
+        },
+        {
+            "enemyType": 2,
             "startX": 50,
-            "startY": -125
+            "startY": -20,
+            "timeout": 7500
         },
         {
-            "enemyType": 2,
-            "startX": -50,
-            "startY": 75
+            "enemyType": 1,
+            "startX": -20,
+            "startY": 100,
+            "timeout": 15000
         },
         {
-            "enemyType": 2,
-            "startX": 150,
-            "startY": 75
+            "enemyType": 1,
+            "startX": 120,
+            "startY": 100,
+            "timeout": 15000
         }
     ]
 }
