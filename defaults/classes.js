@@ -146,7 +146,7 @@ export class EnemyT2 {
 		const dToP = Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2);
 		if (dToP < this.meta.collisionRadius + player.collisionRadius) player = this.collide(player);
 
-		if (dToP > 500 || Math.floor((Date.now() + this.meta.randomShootingTimingShift) / 2000) % 4 == 0) {
+		if (dToP > 400 || Math.floor((Date.now() + this.meta.randomShootingTimingShift) / 2000) % 4 == 0) {
 			this.v += this.acc;
 		} else if (dToP > 300) {
 			this.ma = this.a + Math.PI / 2;
@@ -161,6 +161,10 @@ export class EnemyT2 {
 		return player;
 	}
 	wallBounce() {
+		if (!this.hasWallCollisionYet) {
+			if (Math.abs(this.x - canvas.width / 2) < canvas.width / 2 - this.meta.collisionRadius * 1.5 && Math.abs(this.y - canvas.height / 2) < canvas.height / 2 - this.meta.collisionRadius * 1.5) this.hasWallCollisionYet = true;
+			else return;
+		}
 		[this.x, this.y, this.bx, this.by] = wallBounce_gb(this);
 	}
 	collide(player) {
@@ -220,6 +224,10 @@ export class EnemyT3 {
 		return player;
 	}
 	wallBounce() {
+		if (!this.hasWallCollisionYet) {
+			if (Math.abs(this.x - canvas.width / 2) < canvas.width / 2 - this.meta.collisionRadius * 1.5 && Math.abs(this.y - canvas.height / 2) < canvas.height / 2 - this.meta.collisionRadius * 1.5) this.hasWallCollisionYet = true;
+			else return;
+		}
 		[this.x, this.y, this.bx, this.by] = wallBounce_gb(this);
 	}
 	shoot(frame, projectilesList) {

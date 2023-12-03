@@ -2,13 +2,47 @@
     "1": [
         {
             "enemyType": 1,
-            "startX": 30,
-            "startY": -20
+            "startX": 20,
+            "startY": -25
         },
         {
             "enemyType": 1,
-            "startX": 70,
-            "startY": -20
+            "startX": 80,
+            "startY": -25
+        }
+    ],
+    "2": [
+        {
+            "enemyType": 2,
+            "startX": 50,
+            "startY": -100
+        },
+        {
+            "enemyType": 1,
+            "startX": -25,
+            "startY": 25
+        },
+        {
+            "enemyType": 1,
+            "startX": 125,
+            "startY": 25
+        }
+    ],
+    "3": [
+        {
+            "enemyType": 2,
+            "startX": 50,
+            "startY": -125
+        },
+        {
+            "enemyType": 2,
+            "startX": -50,
+            "startY": 75
+        },
+        {
+            "enemyType": 2,
+            "startX": 150,
+            "startY": 75
         }
     ]
 }

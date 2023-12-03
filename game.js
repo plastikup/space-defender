@@ -114,9 +114,9 @@ function init() {
 	player.h = asset.player.height;
 
 	setTimeout(() => {
-		enemiesList = loadLevel(1, enemiesList);
+		enemiesList = loadLevel(3, enemiesList);
 
-	}, 1000);
+	}, 0);
 
 	console.info('ready');
 
