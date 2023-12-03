@@ -60,9 +60,19 @@ const keyPresses = {
 /* ~~~~~~~~~~~~~~~ */
 /* ~~~~~~~~~~~~~~~ */
 
-// pointer lock API
+// pointer lock API + full screen
 canvas.addEventListener('click', async () => {
-	if (!(document.pointerLockElement || document.mozPointerLockElement)) await canvas.requestPointerLock();
+	if (!(document.pointerLockElement || document.mozPointerLockElement)) {
+		await canvas.requestPointerLock();
+		canvas.requestFullscreen();
+	}
+});
+
+// window resize (related to full screen)
+window.addEventListener('resize', () => {
+	canvas.width = innerWidth;
+	canvas.height = innerHeight;
+	ctx.imageSmoothingEnabled = false;
 });
 
 // mousemove
