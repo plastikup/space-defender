@@ -1,3 +1,4 @@
+import { ctx } from '../defaults/init.js';
 import { ctxS } from '../defaults/ctxS.js';
 import { canvas } from '../defaults/init.js';
 import { asset } from '../scripts/loadAssets.js';
@@ -67,6 +68,8 @@ export class EnemyT1 {
 		this.by = 0;
 
 		this.meta = {
+			name: 'RAMMER',
+
 			displaySizeW: 48,
 			displaySizeH: 48,
 			ogSizeX: 16,
@@ -79,11 +82,15 @@ export class EnemyT1 {
 			hasWallCollisionYet: false,
 
 			health: 8,
+			maxHealth: 8,
+			healthRatio: 1,
 		};
 	}
 
 	drawImage(frame) {
 		ctxS.drawImage(this.uri, frame * this.meta.ogSizeX, 0, this.meta.ogSizeX, this.meta.ogSizeY, this.x, this.y, this.meta.displaySizeW, this.meta.displaySizeH, 1, this.a - Math.PI / 2, this.meta.rotShiftX / 2, this.meta.rotShiftY / 2);
+
+		stroke_gb(this);
 	}
 	pointAtPlayer(player) {
 		this.a = Math.atan2(player.y - this.y, player.x - this.x);
@@ -106,7 +113,7 @@ export class EnemyT1 {
 			if (Math.abs(this.x - canvas.width / 2) < canvas.width / 2 - this.meta.collisionRadius * 1.5 && Math.abs(this.y - canvas.height / 2) < canvas.height / 2 - this.meta.collisionRadius * 1.5) this.meta.hasWallCollisionYet = true;
 			else return;
 		}
-		[this.x, this.y, this.bx, this.by] = wallBounce_gb(this);
+		wallBounce_gb(this);
 	}
 	collide(player) {
 		[player.vx, player.vy] = [Math.cos(this.a) * 5, Math.sin(this.a) * 5];
@@ -139,6 +146,9 @@ export class EnemyT2 {
 		this.by = 0;
 
 		this.meta = {
+			name: 'MACHINE',
+			name2: 'GUN',
+
 			displaySizeW: 96,
 			displaySizeH: 48,
 			ogSizeX: 32,
@@ -153,11 +163,15 @@ export class EnemyT2 {
 			hasWallCollisionYet: false,
 
 			health: 12,
+			maxHealth: 12,
+			healthRatio: 1,
 		};
 	}
 
 	drawImage(frame) {
 		ctxS.drawImage(this.uri, frame * this.meta.ogSizeX, 0, this.meta.ogSizeX, this.meta.ogSizeY, this.x, this.y, this.meta.displaySizeW, this.meta.displaySizeH, 1, this.a - Math.PI / 2, this.meta.rotShiftX, this.meta.rotShiftY);
+
+		stroke_gb(this);
 	}
 	pointAtPlayer(player) {
 		this.a = Math.atan2(player.y - this.y, player.x - this.x);
@@ -187,7 +201,7 @@ export class EnemyT2 {
 			if (Math.abs(this.x - canvas.width / 2) < canvas.width / 2 - this.meta.collisionRadius * 1.5 && Math.abs(this.y - canvas.height / 2) < canvas.height / 2 - this.meta.collisionRadius * 1.5) this.meta.hasWallCollisionYet = true;
 			else return;
 		}
-		[this.x, this.y, this.bx, this.by] = wallBounce_gb(this);
+		wallBounce_gb(this);
 	}
 	collide(player) {
 		[player.vx, player.vy] = [Math.cos(this.a) * 5, Math.sin(this.a) * 5];
@@ -220,6 +234,8 @@ export class EnemyT3 {
 		this.by = 0;
 
 		this.meta = {
+			name: 'BOSS',
+
 			displaySizeW: 96,
 			displaySizeH: 96,
 			ogSizeX: 32,
@@ -232,11 +248,15 @@ export class EnemyT3 {
 			hasWallCollisionYet: false,
 
 			health: 25,
+			maxHealth: 25,
+			healthRatio: 1,
 		};
 	}
 
 	drawImage(frame) {
 		ctxS.drawImage(this.uri, frame * this.meta.ogSizeX, 0, this.meta.ogSizeX, this.meta.ogSizeY, this.x, this.y, this.meta.displaySizeW, this.meta.displaySizeH, 1, this.a, this.meta.rotShiftX / 2, this.meta.rotShiftY / 2);
+
+		stroke_gb(this);
 	}
 	pointAtPlayer(player) {
 		this.a = Math.atan2(this.y - player.y, this.x - player.x) + Math.PI / 2;
@@ -252,7 +272,7 @@ export class EnemyT3 {
 			if (Math.abs(this.x - canvas.width / 2) < canvas.width / 2 - this.meta.collisionRadius * 1.5 && Math.abs(this.y - canvas.height / 2) < canvas.height / 2 - this.meta.collisionRadius * 1.5) this.meta.hasWallCollisionYet = true;
 			else return;
 		}
-		[this.x, this.y, this.bx, this.by] = wallBounce_gb(this);
+		wallBounce_gb(this);
 	}
 	shoot(frame, projectilesList) {
 		/*
@@ -289,6 +309,34 @@ function wallBounce_gb(el) {
 	el.by *= 0.9;
 	el.x += el.bx;
 	el.y += el.by;
+}
 
-	return [el.x, el.y, el.bx, el.by];
+function stroke_gb(el) {
+	ctx.lineCap = 'round';
+
+	ctx.beginPath();
+	ctx.lineWidth = 8;
+	ctx.strokeStyle = '#222';
+	ctx.moveTo(el.x - 30, el.y + el.meta.collisionRadius * 1.2);
+	ctx.lineTo(el.x + 30, el.y + el.meta.collisionRadius * 1.2);
+	ctx.stroke();
+
+	const newHealthRatio = el.meta.health / el.meta.maxHealth;
+	el.meta.healthRatio = (el.meta.healthRatio * 4 + newHealthRatio) / 5;
+
+	ctx.beginPath();
+	ctx.lineWidth = 6;
+	ctx.strokeStyle = '#0F0';
+	ctx.moveTo(el.x - 30, el.y + el.meta.collisionRadius * 1.2);
+	ctx.lineTo(el.x + 60 * (el.meta.healthRatio - 0.5), el.y + el.meta.collisionRadius * 1.2);
+	ctx.stroke();
+
+	ctx.save()
+	ctx.shadowColor = 'black';
+	ctx.shadowOffsetX = 0;
+	ctx.shadowOffsetY = 0;
+	ctx.shadowBlur = 5;
+	const textHeight = ctxS.fillText(el.meta.name, 'white', 14, el.x + 30, el.y + el.meta.collisionRadius * 1.2 + 6, 'tr');
+	if (el.meta.name == 'MACHINE') ctxS.fillText(el.meta.name2, 'white', 14, el.x + 30, el.y + el.meta.collisionRadius * 1.2 + textHeight + 8, 'tr');
+	ctx.restore();
 }

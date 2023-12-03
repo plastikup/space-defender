@@ -6,7 +6,14 @@ export const ctxS = {
 		ctx.fillStyle = fillStyle;
 		ctx.fillRect(x, y, w, h);
 	},
-	drawImage: function (src, sx, sy, sw, sh, dx, dy, dw, dh, opacity = 1, a = 0, axisRotX = 0, axisRotY = 0) {
+	fillCirc: (x, y, r, fillStyle) => {
+		ctx.fillStyle = fillStyle;
+		ctx.lineWidth = 0;
+		ctx.beginPath();
+		ctx.arc(x, y, r, 0, Math.PI * 2, false);
+		ctx.fill();
+	},
+	drawImage: (src, sx, sy, sw, sh, dx, dy, dw, dh, opacity = 1, a = 0, axisRotX = 0, axisRotY = 0) => {
 		ctx.globalAlpha = opacity;
 		ctx.translate(dx, dy);
 		ctx.rotate(a);
@@ -27,5 +34,30 @@ export const ctxS = {
 		}
 		ctx.globalAlpha = 1;
 		ctx.translate(-gxshift, -gyshift);
+	},
+	fillText: (text = 'DEFAULT TEXT', fillStyle = '#FFF', fontSize = 36, x = 0, y = 0, alignStyle = 'c') => {
+		ctx.font = `${fontSize}px Impact`;
+		ctx.fillStyle = fillStyle;
+
+		// the following lines of code are found online - not by me
+		let boundingBox = ctx.measureText(text);
+		switch (alignStyle) {
+			case 'tl':
+				ctx.fillText(text, x, y + boundingBox.actualBoundingBoxAscent + boundingBox.actualBoundingBoxDescent);
+				break;
+			case 'c':
+				ctx.fillText(text, x - boundingBox.width / 2, y + (boundingBox.actualBoundingBoxAscent + boundingBox.actualBoundingBoxDescent) / 2);
+				break;
+			case 'tr':
+				ctx.fillText(text, x - boundingBox.width, y + boundingBox.actualBoundingBoxAscent + boundingBox.actualBoundingBoxDescent);
+				break;
+
+			default:
+				ctx.fillText(text, x, y);
+				console.error(`unknown 'alignStyle' argument: ${alignStyle}`);
+				break;
+		}
+		
+		return boundingBox.actualBoundingBoxAscent + boundingBox.actualBoundingBoxDescent;
 	},
 };
