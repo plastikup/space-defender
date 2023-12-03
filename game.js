@@ -12,8 +12,6 @@ import { exePlayer } from './scripts/player.js';
 import { projectiles } from './scripts/projectiles.js';
 import { enemies } from './scripts/enemies.js';
 
-//import { loadLevel } from './scripts/loadLevel.js';
-
 /* ~~~ canvas initialisation ~~~ */
 import { canvas, ctx } from './defaults/init.js';
 canvas.width = innerWidth;
@@ -62,10 +60,23 @@ const keyPresses = {
 /* ~~~~~~~~~~~~~~~ */
 /* ~~~~~~~~~~~~~~~ */
 
-document.addEventListener('mousemove', (e) => {
-	mouse.x = e.clientX;
-	mouse.y = e.clientY;
+// pointer lock API
+canvas.addEventListener('click', async () => {
+	if (!(document.pointerLockElement || document.mozPointerLockElement)) await canvas.requestPointerLock();
 });
+
+// mousemove
+document.addEventListener('mousemove', (e) => {
+	if (document.pointerLockElement === canvas || document.mozPointerLockElement === canvas) {
+		mouse.x = Math.min(Math.max(mouse.x + e.movementX, -0.25 * canvas.width), 1.25 * canvas.width);
+		mouse.y = Math.min(Math.max(mouse.y + e.movementY, -0.25 * canvas.height), 1.25 * canvas.height);
+	} else {
+		mouse.x = e.clientX;
+		mouse.y = e.clientY;
+	}
+});
+
+// shoot
 document.addEventListener('mousedown', (e) => {
 	if (e.button == 0) projectilesList.push(new Projectile(player.x, player.y, player.a, 10, asset.projectiles, 16, 16, 0, 0, true));
 	else if (e.button == 2) {
@@ -79,6 +90,7 @@ document.addEventListener('contextmenu', (event) => {
 	event.preventDefault();
 });
 
+// movement
 document.addEventListener('keydown', (e) => {
 	keyPresses[e.keyCode] = true;
 });
@@ -106,7 +118,37 @@ function main() {
 	player = exePlayer(player, keyPresses, mouse, asset, frame);
 
 	// cursor
-	ctxS.drawImage(asset.crosshair, 0, 0, asset.crosshair.width, asset.crosshair.height, mouse.x - 16, mouse.y - 16, 32, 32);
+	if (Math.abs(mouse.x - canvas.width / 2) < canvas.width / 2 + 16 && Math.abs(mouse.y - canvas.height / 2) < canvas.height / 2 + 16) {
+		ctxS.drawImage(asset.crosshair, 0, 0, asset.crosshair.width, asset.crosshair.height, mouse.x - 16, mouse.y - 16, 32, 32);
+	} else {
+		if (Math.abs(mouse.x - canvas.width / 2) > canvas.width / 2 + 16 && Math.abs(mouse.y - canvas.height / 2) > canvas.height / 2 + 16) {
+			if (mouse.x > canvas.width / 2) {
+				if (mouse.y < canvas.height / 2) {
+					ctxS.drawImage(asset.pointer, 0, 0, asset.pointer.width, asset.pointer.height, canvas.width - 40, 16, 32, 32, 0.25, -Math.PI / 4);
+				} else {
+					ctxS.drawImage(asset.pointer, 0, 0, asset.pointer.width, asset.pointer.height, canvas.width - 16, canvas.height - 40, 32, 32, 0.25, Math.PI / 4);
+				}
+			} else {
+				if (mouse.y < canvas.height / 2) {
+					ctxS.drawImage(asset.pointer, 0, 0, asset.pointer.width, asset.pointer.height, 16, 40, 32, 32, 0.25, -Math.PI * 0.75);
+				} else {
+					ctxS.drawImage(asset.pointer, 0, 0, asset.pointer.width, asset.pointer.height, 40, canvas.height - 16, 32, 32, 0.25, Math.PI * 0.75);
+				}
+			}
+		} else if (Math.abs(mouse.x - canvas.width / 2) > canvas.width / 2 + 16) {
+			if (mouse.x < canvas.width / 2) {
+				ctxS.drawImage(asset.pointer, 0, 0, asset.pointer.width, asset.pointer.height, 32, mouse.y + 16, 32, 32, 0.25, Math.PI);
+			} else {
+				ctxS.drawImage(asset.pointer, 0, 0, asset.pointer.width, asset.pointer.height, canvas.width - 32, mouse.y - 16, 32, 32, 0.25);
+			}
+		} else {
+			if (mouse.y < canvas.height / 2) {
+				ctxS.drawImage(asset.pointer, 0, 0, asset.pointer.width, asset.pointer.height, mouse.x - 16, 32, 32, 32, 0.25, -Math.PI / 2);
+			} else {
+				ctxS.drawImage(asset.pointer, 0, 0, asset.pointer.width, asset.pointer.height, mouse.x + 16, canvas.height - 32, 32, 32, 0.25, Math.PI / 2);
+			}
+		}
+	}
 
 	requestAnimationFrame(main);
 }

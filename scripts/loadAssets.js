@@ -2,6 +2,7 @@ let asset = {
 	backgroundImage: new Image(),
 	player: new Image(),
 	crosshair: new Image(),
+	pointer: new Image(),
 	projectiles: new Image(),
 	music: {
 		bravePilots: new Audio('./assets/music/Brave Pilots.ogg'),
@@ -16,6 +17,7 @@ let asset = {
 asset.backgroundImage.src = './assets/background/background.png';
 asset.player.src = './assets/ships/ship.png';
 asset.crosshair.src = './assets/crosshair.png';
+asset.pointer.src = './assets/pointer.png';
 asset.projectiles.src = './assets/ships/projectiles.png';
 
 asset.music.bravePilots.loop = true;
