@@ -22,9 +22,11 @@ ctx.imageSmoothingEnabled = false;
 import { asset } from './scripts/loadAssets.js';
 
 /* ~~~ game variables ~~~ */
+let currentLevel = 0;
 let frame;
 let projectilesList = [];
 let enemiesList = [];
+let upcomingEnemies = 0;
 
 //enemiesList.push(new EnemyT2(200, 200), new EnemyT2(300, 300), new EnemyT2(400, 400));
 
@@ -160,24 +162,33 @@ function main() {
 		}
 	}
 
-	requestAnimationFrame(main);
+	// load next level if every enemies are down
+	if (enemiesList.length == 0 && upcomingEnemies == 0) {
+		if (loadLevel(++currentLevel)) requestAnimationFrame(main);
+	} else requestAnimationFrame(main);
 }
 
 function loadLevel(levelID) {
-	levels[levelID].forEach((el) => {
-		setTimeout(() => {
-			if (el.enemyType == 3) enemiesList.push(new EnemyT3((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
-			else if (el.enemyType == 2) enemiesList.push(new EnemyT2((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
-			else enemiesList.push(new EnemyT1((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
-		}, el.timeout);
-	});
+	if (levels[levelID] == undefined) {
+		alert('(this is a placeholder) you finished every level!');
+		return false;
+	} else {
+		levels[levelID].forEach((el) => {
+			upcomingEnemies++;
+			setTimeout(() => {
+				if (el.enemyType == 3) enemiesList.push(new EnemyT3((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
+				else if (el.enemyType == 2) enemiesList.push(new EnemyT2((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
+				else enemiesList.push(new EnemyT1((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
+				upcomingEnemies--;
+			}, el.timeout + 5000);
+		});
+		return true;
+	}
 }
 
 function init() {
 	player.w = asset.player.width;
 	player.h = asset.player.height;
-
-	loadLevel(3);
 
 	console.info('ready');
 
