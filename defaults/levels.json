@@ -7,7 +7,7 @@
             "timeout": 0
         },
         {
-            "enemyType": 1,
+            "enemyType": 2,
             "startX": 80,
             "startY": -20,
             "timeout": 0

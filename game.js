@@ -2,15 +2,17 @@
 
 /* ~~~ imports ~~~ */
 import { ctxS } from './defaults/ctxS.js'; // ctx functions simplified
-import { default as theme } from './defaults/theme.json' assert { type: 'json' }; // JSON file containing color theme
+//import { default as theme } from './defaults/theme.json' assert { type: 'json' }; // JSON file containing color theme
 
-import { default as levels } from '../defaults/levels.json' assert { type: 'json' };
+import { default as levels } from '../defaults/levels.json' assert { type: 'json' }; // JSON file with all the levels
 
-import { Projectile, EnemyT1, EnemyT2, EnemyT3 } from './defaults/classes.js';
+import { Projectile, EnemyT1, EnemyT2, EnemyT3 } from './defaults/classes.js'; // classes
 
-import { exePlayer } from './scripts/player.js';
-import { projectiles } from './scripts/projectiles.js';
-import { enemies } from './scripts/enemies.js';
+import { exePlayer } from './scripts/player.js'; // player script
+import { projectiles } from './scripts/projectiles.js'; // projectile script
+import { enemies } from './scripts/enemies.js'; // enemies script
+
+import { displayCards } from './scripts/displayCards.js'; // current level progress
 
 /* ~~~ canvas initialisation ~~~ */
 import { canvas, ctx } from './defaults/init.js';
@@ -22,7 +24,7 @@ ctx.imageSmoothingEnabled = false;
 import { asset } from './scripts/loadAssets.js';
 
 /* ~~~ game variables ~~~ */
-let currentLevel = 0;
+let currentLevel = 0; // levels starts at ONE!!!
 let frame;
 let projectilesList = [];
 let enemiesList = [];
@@ -63,10 +65,10 @@ const keyPresses = {
 /* ~~~~~~~~~~~~~~~ */
 
 // pointer lock API + full screen
-canvas.addEventListener('click', async () => {
+canvas.addEventListener('mousedown', async () => {
 	if (!(document.pointerLockElement || document.mozPointerLockElement)) {
 		await canvas.requestPointerLock();
-		canvas.requestFullscreen();
+		//canvas.requestFullscreen();
 	}
 });
 
@@ -90,12 +92,22 @@ document.addEventListener('mousemove', (e) => {
 
 // shoot
 document.addEventListener('mousedown', (e) => {
-	if (e.button == 0) projectilesList.push(new Projectile(player.x, player.y, player.a, 10, asset.projectiles, 16, 16, 0, 0, true));
-	else if (e.button == 2) {
-		const rando = Math.random() - 0.5;
-		projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, -1, true));
-		projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, 1, true));
+	function piew(){
+		if (e.button == 0) projectilesList.push(new Projectile(player.x, player.y, player.a, 10, asset.projectiles, 16, 16, 0, 0, true));
+		else if (e.button == 2) {
+			const rando = Math.random() - 0.5;
+			projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, -1, true));
+			projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, 1, true));
+		}
 	}
+	piew();
+	const projectileInterval = setInterval(() => {
+		piew();
+	}, 250);
+	addEventListener('mouseup', () => {
+		clearInterval(projectileInterval);
+	});
+
 	if (asset.music.bravePilots.paused) asset.music.bravePilots.play();
 });
 document.addEventListener('contextmenu', (event) => {
@@ -162,9 +174,15 @@ function main() {
 		}
 	}
 
+	// current level progress
+	displayCards(currentLevel, enemiesList);
+
 	// load next level if every enemies are down
 	if (enemiesList.length == 0 && upcomingEnemies == 0) {
-		if (loadLevel(++currentLevel)) requestAnimationFrame(main);
+		if (loadLevel(++currentLevel)) {
+			displayCards(currentLevel, enemiesList);
+			requestAnimationFrame(main);
+		}
 	} else requestAnimationFrame(main);
 }
 
@@ -180,7 +198,7 @@ function loadLevel(levelID) {
 				else if (el.enemyType == 2) enemiesList.push(new EnemyT2((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
 				else enemiesList.push(new EnemyT1((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
 				upcomingEnemies--;
-			}, el.timeout + 5000);
+			}, el.timeout + 0.5000);
 		});
 		return true;
 	}
@@ -196,4 +214,4 @@ function init() {
 }
 
 init();
-console.log(theme);
+//console.log(theme);

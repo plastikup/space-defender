@@ -2,9 +2,17 @@ import { canvas, ctx } from '../defaults/init.js';
 
 export const ctxS = {
 	fillRect: (x, y, w, h, fillStyle) => {
-		if (fillStyle == undefined) throw 'fillStyle is not defined.';
 		ctx.fillStyle = fillStyle;
 		ctx.fillRect(x, y, w, h);
+	},
+	roundRect: (x, y, w, h, radii, lineWidth, strokeStyle, fillStyle) => {
+		ctx.strokeStyle = strokeStyle;
+		ctx.lineWidth = lineWidth;
+		ctx.fillStyle = fillStyle;
+		ctx.beginPath();
+		ctx.roundRect(x, y, w, h, radii);
+		ctx.fill();
+		ctx.stroke();
 	},
 	fillCirc: (x, y, r, fillStyle) => {
 		ctx.fillStyle = fillStyle;
@@ -35,8 +43,8 @@ export const ctxS = {
 		ctx.globalAlpha = 1;
 		ctx.translate(-gxshift, -gyshift);
 	},
-	fillText: (text = 'DEFAULT TEXT', fillStyle = '#FFF', fontSize = 36, x = 0, y = 0, alignStyle = 'c') => {
-		ctx.font = `${fontSize}px Impact`;
+	fillText: (text = 'DEFAULT TEXT', fillStyle = '#FFF', fontSize = 36, x = 0, y = 0, alignStyle = 'c', fontFamily = 'Impact') => {
+		ctx.font = `${fontSize}px ${fontFamily}`;
 		ctx.fillStyle = fillStyle;
 
 		// the following lines of code are found online - not by me
@@ -44,6 +52,9 @@ export const ctxS = {
 		switch (alignStyle) {
 			case 'tl':
 				ctx.fillText(text, x, y + boundingBox.actualBoundingBoxAscent + boundingBox.actualBoundingBoxDescent);
+				break;
+			case 'tc':
+				ctx.fillText(text, x - boundingBox.width / 2, y + boundingBox.actualBoundingBoxAscent + boundingBox.actualBoundingBoxDescent);
 				break;
 			case 'c':
 				ctx.fillText(text, x - boundingBox.width / 2, y + (boundingBox.actualBoundingBoxAscent + boundingBox.actualBoundingBoxDescent) / 2);
@@ -57,7 +68,7 @@ export const ctxS = {
 				console.error(`unknown 'alignStyle' argument: ${alignStyle}`);
 				break;
 		}
-		
+
 		return boundingBox.actualBoundingBoxAscent + boundingBox.actualBoundingBoxDescent;
 	},
 };

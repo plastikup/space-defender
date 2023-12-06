@@ -69,6 +69,7 @@ export class EnemyT1 {
 
 		this.meta = {
 			name: 'RAMMER',
+			enemyLevel: 0,
 
 			displaySizeW: 48,
 			displaySizeH: 48,
@@ -148,6 +149,7 @@ export class EnemyT2 {
 		this.meta = {
 			name: 'MACHINE',
 			name2: 'GUN',
+			enemyLevel: 1,
 
 			displaySizeW: 96,
 			displaySizeH: 48,
@@ -235,6 +237,7 @@ export class EnemyT3 {
 
 		this.meta = {
 			name: 'BOSS',
+			enemyLevel: 2,
 
 			displaySizeW: 96,
 			displaySizeH: 96,
