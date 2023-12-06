@@ -46,8 +46,14 @@ let player = {
 	w: undefined,
 	h: undefined,
 	a: 0,
-	frame: 0,
-	collisionRadius: 32,
+	meta: {
+		frame: 0,
+		collisionRadius: 32,
+		health: 25,
+		maxHealth: 25,
+		healthRatio: 1,
+		name: 'YOU',
+	},
 };
 const keyPresses = {
 	37: false,
@@ -92,7 +98,7 @@ document.addEventListener('mousemove', (e) => {
 
 // shoot
 document.addEventListener('mousedown', (e) => {
-	function piew(){
+	function piew() {
 		if (e.button == 0) projectilesList.push(new Projectile(player.x, player.y, player.a, 10, asset.projectiles, 16, 16, 0, 0, true));
 		else if (e.button == 2) {
 			const rando = Math.random() - 0.5;
@@ -198,7 +204,7 @@ function loadLevel(levelID) {
 				else if (el.enemyType == 2) enemiesList.push(new EnemyT2((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
 				else enemiesList.push(new EnemyT1((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
 				upcomingEnemies--;
-			}, el.timeout + 0.5000);
+			}, el.timeout + 0.5);
 		});
 		return true;
 	}

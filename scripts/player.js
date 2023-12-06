@@ -1,5 +1,6 @@
 import { ctxS } from '../defaults/ctxS.js';
-import { canvas } from '../defaults/init.js';
+import { canvas, ctx } from '../defaults/init.js';
+import { stroke_gb } from '../defaults/classes.js'; // classes
 
 export function exePlayer(player, keyPresses, mouse, asset, frame) {
 	// update player xy
@@ -11,22 +12,22 @@ export function exePlayer(player, keyPresses, mouse, asset, frame) {
 	player.vy = player.vy * 0.825 + ((keyPresses[40] || keyPresses[83]) - (keyPresses[38] || keyPresses[87]));
 
 	// bounce on wall
-	if (Math.abs(player.x - canvas.width / 2) > canvas.width / 2 - player.collisionRadius) {
+	if (Math.abs(player.x - canvas.width / 2) > canvas.width / 2 - player.meta.collisionRadius) {
 		if (player.x < canvas.width / 2) {
 			player.vx = Math.max(-player.vx, player.vx) * 1.5;
-			player.x = player.collisionRadius;
+			player.x = player.meta.collisionRadius;
 		} else {
 			player.vx = Math.min(-player.vx, player.vx) * 1.5;
-			player.x = canvas.width - player.collisionRadius;
+			player.x = canvas.width - player.meta.collisionRadius;
 		}
 	}
-    if (Math.abs(player.y - canvas.height / 2) > canvas.height / 2 - player.collisionRadius) {
+	if (Math.abs(player.y - canvas.height / 2) > canvas.height / 2 - player.meta.collisionRadius) {
 		if (player.y < canvas.height / 2) {
 			player.vy = Math.max(-player.vy, player.vy) * 1.5;
-			player.y = player.collisionRadius;
+			player.y = player.meta.collisionRadius;
 		} else {
 			player.vy = Math.min(-player.vy, player.vy) * 1.5;
-			player.y = canvas.height - player.collisionRadius;
+			player.y = canvas.height - player.meta.collisionRadius;
 		}
 	}
 
@@ -36,6 +37,9 @@ export function exePlayer(player, keyPresses, mouse, asset, frame) {
 	// draw player
 	ctxS.drawImage(asset.player, (player.frame % 4) * 16, Math.floor(player.frame / 4) * 24, 16, 24, player.x, player.y, 60, 90, 1, player.a, 40, 35);
 	player.frame = frame % 8;
+
+	// draw health
+	stroke_gb(player, '#0F0');
 
 	return player;
 }

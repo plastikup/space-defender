@@ -40,7 +40,9 @@ export class Projectile {
 			});
 		} else {
 			// hit player
-			if (Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2) < player.collisionRadius + 8) {
+			if (Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2) < player.meta.collisionRadius + 8) {
+				player.meta.health -= 1 + (this.type == 2);
+				console.log(this.type);
 				projectilesList.splice(projectilesList.indexOf(bulletRaw), 1);
 			}
 		}
@@ -100,7 +102,7 @@ export class EnemyT1 {
 		this.ma = Math.atan2(player.y - this.y, player.x - this.x);
 
 		const dToP = Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2);
-		if (dToP < this.meta.collisionRadius + player.collisionRadius) player = this.collide(player);
+		if (dToP < this.meta.collisionRadius + player.meta.collisionRadius) player = this.collide(player);
 
 		this.v += this.acc;
 		this.x += Math.cos(this.ma) * this.v;
@@ -182,7 +184,7 @@ export class EnemyT2 {
 		this.ma = Math.atan2(player.y - this.y, player.x - this.x);
 
 		const dToP = Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2);
-		if (dToP < this.meta.collisionRadius + player.collisionRadius) player = this.collide(player);
+		if (dToP < this.meta.collisionRadius + player.meta.collisionRadius) player = this.collide(player);
 
 		if (dToP > 400 || (this.meta.hasWallCollisionYet && Math.floor((Date.now() + this.meta.randomShootingTimingShift) / 2000) % 3 == 0)) {
 			this.v += this.acc;
@@ -214,7 +216,7 @@ export class EnemyT2 {
 	}
 	shoot(_, projectilesList) {
 		if (this.meta.hasWallCollisionYet && Math.floor((Date.now() + this.meta.randomShootingTimingShift) / 2000) % 3 == 0 && Date.now() - this.meta.lastProjectile > 100) {
-			projectilesList.push(new Projectile(this.x, this.y, this.a + Math.PI / 2 + 0.5 * (Math.random() - 0.5), 10, asset.projectiles, 16, 0, 0));
+			projectilesList.push(new Projectile(this.x, this.y, this.a + Math.PI / 2 + 0.5 * (Math.random() - 0.5), 10, asset.projectiles, 16, 0, 2));
 			this.v -= 5;
 			this.meta.lastProjectile = Date.now();
 		}
@@ -280,7 +282,7 @@ export class EnemyT3 {
 	shoot(frame, projectilesList) {
 		/*
 		if (frame % 4 == 0 && Date.now() - this.meta.lastProjectile > 100) {
-			projectilesList.push(new Projectile(this.x, this.y, this.ma + Math.PI / 2, 6, asset.projectiles, 2, 0, 0));
+			projectilesList.push(new Projectile(this.x, this.y, this.ma + Math.PI / 2, 6, asset.projectiles, 2, 0, 3));
 			this.v -= 8;
 			this.meta.lastProjectile = Date.now();
 		}
@@ -314,7 +316,7 @@ function wallBounce_gb(el) {
 	el.y += el.by;
 }
 
-function stroke_gb(el) {
+export function stroke_gb(el, fillColor = '#FF4433') {
 	ctx.lineCap = 'round';
 
 	ctx.beginPath();
@@ -329,12 +331,12 @@ function stroke_gb(el) {
 
 	ctx.beginPath();
 	ctx.lineWidth = 6;
-	ctx.strokeStyle = '#0F0';
+	ctx.strokeStyle = fillColor;
 	ctx.moveTo(el.x - 30, el.y + el.meta.collisionRadius * 1.2);
 	ctx.lineTo(el.x + 60 * (el.meta.healthRatio - 0.5), el.y + el.meta.collisionRadius * 1.2);
 	ctx.stroke();
 
-	ctx.save()
+	ctx.save();
 	ctx.shadowColor = 'black';
 	ctx.shadowOffsetX = 0;
 	ctx.shadowOffsetY = 0;
