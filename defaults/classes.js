@@ -27,7 +27,7 @@ export class Projectile {
 	move() {
 		this.x += Math.cos(this.a - Math.PI / 2) * this.s;
 		this.y += Math.sin(this.a - Math.PI / 2) * this.s;
-		if (this.type == 1) this.s = Math.max(this.s * 0.98, 3);
+		if (this.type == 1) this.s = Math.max(this.s * 0.9825, 3);
 	}
 	collide(projectilesList, enemiesList, player, bulletRaw) {
 		if (this.firedByPlayer) {
@@ -160,7 +160,7 @@ export class EnemyT2 {
 			lastProjectile: null,
 			collisionRadius: 32,
 			randomDir: Math.round(Math.random()) * 0.5 - 0.25,
-			randomShootingTimingShift: Math.random() * 10000,
+			randomShootingTimingShift: Math.random() * 8000,
 
 			hasWallCollisionYet: false,
 
@@ -184,7 +184,7 @@ export class EnemyT2 {
 		const dToP = Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2);
 		if (dToP < this.meta.collisionRadius + player.collisionRadius) player = this.collide(player);
 
-		if (dToP > 400 || (this.meta.hasWallCollisionYet && Math.floor((Date.now() + this.meta.randomShootingTimingShift) / 2000) % 4 == 0)) {
+		if (dToP > 400 || (this.meta.hasWallCollisionYet && Math.floor((Date.now() + this.meta.randomShootingTimingShift) / 2000) % 3 == 0)) {
 			this.v += this.acc;
 		} else if (dToP > 300) {
 			this.ma = this.a + Math.PI / 2;
@@ -213,7 +213,7 @@ export class EnemyT2 {
 		return player;
 	}
 	shoot(_, projectilesList) {
-		if (this.meta.hasWallCollisionYet && Math.floor((Date.now() + this.meta.randomShootingTimingShift) / 2000) % 4 == 0 && Date.now() - this.meta.lastProjectile > 100) {
+		if (this.meta.hasWallCollisionYet && Math.floor((Date.now() + this.meta.randomShootingTimingShift) / 2000) % 3 == 0 && Date.now() - this.meta.lastProjectile > 100) {
 			projectilesList.push(new Projectile(this.x, this.y, this.a + Math.PI / 2 + 0.5 * (Math.random() - 0.5), 10, asset.projectiles, 16, 0, 0));
 			this.v -= 5;
 			this.meta.lastProjectile = Date.now();
