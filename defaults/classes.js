@@ -1,7 +1,7 @@
 import { ctx } from '../defaults/init.js';
 import { ctxS } from '../defaults/ctxS.js';
 import { canvas } from '../defaults/init.js';
-import { asset } from '../scripts/loadAssets.js';
+import { asset, rotatingAsset } from '../scripts/loadAssets.js';
 
 export class Projectile {
 	constructor(x, y, a, v, uri, sx, sy, type, dir = 0, firedByPlayer = false) {
@@ -42,7 +42,6 @@ export class Projectile {
 			// hit player
 			if (Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2) < player.meta.collisionRadius + 8) {
 				player.meta.health -= 1 + (this.type == 2);
-				console.log(this.type);
 				projectilesList.splice(projectilesList.indexOf(bulletRaw), 1);
 			}
 		}
@@ -130,6 +129,7 @@ export class EnemyT1 {
 			projectilesList.push(new Projectile(this.x, this.y, this.ma + Math.PI / 2, 6, asset.projectiles, 2, 0, 0));
 			this.v -= 8;
 			this.meta.lastProjectile = Date.now();
+			rotatingAsset.gun1.play();
 		}
 		return projectilesList;
 	}
@@ -219,6 +219,7 @@ export class EnemyT2 {
 			projectilesList.push(new Projectile(this.x, this.y, this.a + Math.PI / 2 + 0.5 * (Math.random() - 0.5), 10, asset.projectiles, 16, 0, 2));
 			this.v -= 5;
 			this.meta.lastProjectile = Date.now();
+			rotatingAsset.gun1.play();
 		}
 		return projectilesList;
 	}

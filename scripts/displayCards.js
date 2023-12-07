@@ -45,7 +45,7 @@ class Card {
 	}
 
 	drawCard() {
-		ctxS.roundRect(this.x - this.w / 2, this.y - this.h / 2, this.w, this.h, [12], 6, this.meta.color, this.meta.color + 'A');
+		ctxS.roundRect(this.x - this.w / 2, this.y - this.h / 2, this.w, this.h, [12], 6, this.meta.color + 'A', this.meta.color + '4');
 		ctxS.drawImage(this.meta.img, 0, 0, this.meta.sw, this.meta.img.height, this.x - this.meta.dw / 2, this.y - this.meta.dh / 2, this.meta.dw - 2, this.meta.dh - 2);
 	}
 	arrangeCards(sum, index) {
