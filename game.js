@@ -2,16 +2,12 @@
 
 /* ~~~ imports ~~~ */
 import { ctxS } from './defaults/ctxS.js'; // ctx functions simplified
-//import { default as theme } from './defaults/theme.json' assert { type: 'json' }; // JSON file containing color theme
 
 import { default as levels } from '../defaults/levels.json' assert { type: 'json' }; // JSON file with all the levels
 
-import { EnemyT1, EnemyT2, EnemyT3 } from './scripts/enemies.js';
-import { Projectile } from './scripts/projectiles.js';
-
-import { exePlayer } from './scripts/player.js'; // player script
-import { projectiles } from './scripts/projectiles.js'; // projectile script
-import { enemies } from './scripts/enemies.js'; // enemies script
+import { EnemyT1, EnemyT2, EnemyT3, enemies } from './scripts/enemies.js';
+import { exePlayer } from './scripts/player.js';
+import { Projectile, projectiles } from './scripts/projectiles.js';
 
 import { displayCards } from './scripts/displayCards.js'; // current level progress
 
@@ -30,8 +26,6 @@ let frame;
 let projectilesList = [];
 let enemiesList = [];
 let upcomingEnemies = 0;
-
-//enemiesList.push(new EnemyT2(200, 200), new EnemyT2(300, 300), new EnemyT2(400, 400));
 
 const mouse = {
 	x: 0,
@@ -232,4 +226,3 @@ function init() {
 }
 
 init();
-//console.log(theme);
