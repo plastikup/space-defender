@@ -90,10 +90,13 @@ export class EnemyT1 {
 	}
 	shoot(frame, projectilesList) {
 		if (frame % 10 == 0 && Date.now() - this.meta.lastProjectile > 100) {
-			projectilesList.push(new Projectile(this.x, this.y, this.ma + Math.PI / 2, 6, asset.projectiles, 2, 0, 0));
-			this.v -= 8;
 			this.meta.lastProjectile = Date.now();
-			rotatingAsset.gun1.play();
+
+			setTimeout(() => {
+				projectilesList.push(new Projectile(this.x, this.y, this.ma + Math.PI / 2, 6, asset.projectiles, 2, 0, 0));
+				rotatingAsset.gun1.play();
+				this.v -= 8;
+			}, Math.random() * 200);
 		}
 		return projectilesList;
 	}
@@ -180,10 +183,11 @@ export class EnemyT2 {
 	}
 	shoot(_, projectilesList) {
 		if (this.meta.hasWallCollisionYet && Math.floor((Date.now() + this.meta.randomShootingTimingShift) / 2000) % 3 == 0 && Date.now() - this.meta.lastProjectile > 100) {
-			projectilesList.push(new Projectile(this.x, this.y, this.a + Math.PI / 2 + 0.5 * (Math.random() - 0.5), 10, asset.projectiles, 16, 0, 2));
-			this.v -= 5;
 			this.meta.lastProjectile = Date.now();
+
+			projectilesList.push(new Projectile(this.x, this.y, this.a + Math.PI / 2 + 0.5 * (Math.random() - 0.5), 10, asset.projectiles, 16, 0, 2));
 			rotatingAsset.gun1.play();
+			this.v -= 5;
 		}
 		return projectilesList;
 	}

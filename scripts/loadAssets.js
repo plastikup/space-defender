@@ -57,10 +57,8 @@ class Channel {
 		this.sfx.volume = volume;
 	}
 	play() {
-		setTimeout(() => {
-			this.sfx.currentTime = 0;
+		this.sfx.currentTime = 0;
 		this.sfx.play();
-		}, Math.random() * 100);
 	}
 }
 
