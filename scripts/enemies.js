@@ -2,9 +2,9 @@ import { ctxS } from '../defaults/ctxS.js';
 import { canvas } from '../defaults/init.js';
 
 export function enemies(enemiesList, player, projectilesList, frame) {
-	enemiesList.forEach((el) => {
+	enemiesList.forEach((el, i) => {
 		if (el.meta.health < 0) {
-			enemiesList.splice(enemiesList.indexOf(el), 1);
+			enemiesList.splice(i, 1);
 		} else {
 			el.drawImage(frame % 2);
 			el.pointAtPlayer(player);
