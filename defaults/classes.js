@@ -34,7 +34,7 @@ export class Projectile {
 			// hit enemy
 			enemiesList.forEach((el) => {
 				if (Math.sqrt((this.x - el.x) ** 2 + (this.y - el.y) ** 2) < el.meta.collisionRadius + 8) {
-					el.meta.health -= 1 - 0.25 * this.type;
+					el.meta.health -= 1 + 0.5 * this.type;
 					projectilesList.splice(projectilesList.indexOf(bulletRaw), 1);
 				}
 			});
@@ -84,8 +84,8 @@ export class EnemyT1 {
 
 			hasWallCollisionYet: false,
 
-			health: 8,
-			maxHealth: 8,
+			health: 20,
+			maxHealth: 20,
 			healthRatio: 1,
 		};
 	}
@@ -166,8 +166,8 @@ export class EnemyT2 {
 
 			hasWallCollisionYet: false,
 
-			health: 12,
-			maxHealth: 12,
+			health: 35,
+			maxHealth: 35,
 			healthRatio: 1,
 		};
 	}

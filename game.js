@@ -99,8 +99,10 @@ document.addEventListener('mousemove', (e) => {
 // shoot
 document.addEventListener('mousedown', (e) => {
 	function piew() {
-		if (e.button == 0) projectilesList.push(new Projectile(player.x, player.y, player.a, 10, asset.projectiles, 16, 16, 0, 0, true));
-		else if (e.button == 2) {
+		if (e.button == 0) {
+			projectilesList.push(new Projectile(player.x + Math.cos(player.a) * 5, player.y + Math.sin(player.a) * 5, player.a, 10, asset.projectiles, 16, 16, 0, 0, true));
+			projectilesList.push(new Projectile(player.x - Math.cos(player.a) * 5, player.y - Math.sin(player.a) * 5, player.a, 10, asset.projectiles, 16, 16, 0, 0, true));
+		} else if (e.button == 2) {
 			const rando = Math.random() - 0.5;
 			projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, -1, true));
 			projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, 1, true));
