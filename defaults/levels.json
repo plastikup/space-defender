@@ -120,5 +120,13 @@
             "startY": 120,
             "timeout": 25000
         }
+    ],
+    "5": [
+        {
+            "enemyType": 3,
+            "startX": 50,
+            "startY": -20,
+            "timeout": 0
+        }
     ]
 }

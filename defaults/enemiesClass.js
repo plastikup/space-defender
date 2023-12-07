@@ -2,58 +2,7 @@ import { ctx } from '../defaults/init.js';
 import { ctxS } from '../defaults/ctxS.js';
 import { canvas } from '../defaults/init.js';
 import { asset, rotatingAsset } from '../scripts/loadAssets.js';
-
-export class Projectile {
-	constructor(x, y, a, v, uri, sx, sy, type, dir = 0, firedByPlayer = false) {
-		this.x = x;
-		this.y = y;
-		this.startX = this.x;
-		this.startY = this.y;
-		this.a = a;
-		this.s = v;
-		this.uri = uri;
-		this.sx = sx;
-		this.sy = sy;
-		this.type = type;
-		this.dir = dir;
-		this.creationTime = Date.now();
-		this.firedByPlayer = firedByPlayer;
-	}
-
-	drawImage() {
-		let sinus = Math.cos((Date.now() - this.creationTime) / 80 + Math.PI / 8) * 25 * (this.type == 1) * this.dir;
-		ctxS.drawImage(this.uri, this.sx, this.sy, 16, 16, this.x + sinus * Math.cos(this.a), this.y + sinus * Math.sin(this.a), this.uri.width, this.uri.height, 1, this.a, this.uri.width / 2, this.uri.height / 2);
-	}
-	move() {
-		this.x += Math.cos(this.a - Math.PI / 2) * this.s;
-		this.y += Math.sin(this.a - Math.PI / 2) * this.s;
-		if (this.type == 1) this.s = Math.max(this.s * 0.9825, 3);
-	}
-	collide(projectilesList, enemiesList, player, bulletRaw) {
-		if (this.firedByPlayer) {
-			// hit enemy
-			enemiesList.forEach((el) => {
-				if (Math.sqrt((this.x - el.x) ** 2 + (this.y - el.y) ** 2) < el.meta.collisionRadius + 8) {
-					el.meta.health -= 1 + 0.5 * this.type;
-					projectilesList.splice(projectilesList.indexOf(bulletRaw), 1);
-				}
-			});
-		} else {
-			// hit player
-			if (Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2) < player.meta.collisionRadius + 8) {
-				player.meta.health -= 1 + (this.type == 2);
-				projectilesList.splice(projectilesList.indexOf(bulletRaw), 1);
-			}
-		}
-		return [projectilesList, enemiesList, player];
-	}
-	isOutsideCanvas() {
-		return Math.abs(this.x - canvas.width / 2) > canvas.width / 2 + this.uri.width * 2 || Math.abs(this.y - canvas.height / 2) > canvas.height / 2 + this.uri.height * 2;
-	}
-	isTooFar() {
-		return Math.sqrt((this.x - this.startX) ** 2 + (this.y - this.startY) ** 2) > (this.type == 1 ? 500 : 900);
-	}
-}
+import { healthBar } from '../scripts/healthBar.js';
 
 export class EnemyT1 {
 	constructor(x, y) {
@@ -92,7 +41,7 @@ export class EnemyT1 {
 	drawImage(frame) {
 		ctxS.drawImage(this.uri, frame * this.meta.ogSizeX, 0, this.meta.ogSizeX, this.meta.ogSizeY, this.x, this.y, this.meta.displaySizeW, this.meta.displaySizeH, 1, this.a - Math.PI / 2, this.meta.rotShiftX / 2, this.meta.rotShiftY / 2);
 
-		stroke_gb(this);
+		healthBar(this);
 	}
 	pointAtPlayer(player) {
 		this.a = Math.atan2(player.y - this.y, player.x - this.x);
@@ -175,7 +124,7 @@ export class EnemyT2 {
 	drawImage(frame) {
 		ctxS.drawImage(this.uri, frame * this.meta.ogSizeX, 0, this.meta.ogSizeX, this.meta.ogSizeY, this.x, this.y, this.meta.displaySizeW, this.meta.displaySizeH, 1, this.a - Math.PI / 2, this.meta.rotShiftX, this.meta.rotShiftY);
 
-		stroke_gb(this);
+		healthBar(this);
 	}
 	pointAtPlayer(player) {
 		this.a = Math.atan2(player.y - this.y, player.x - this.x);
@@ -262,7 +211,7 @@ export class EnemyT3 {
 	drawImage(frame) {
 		ctxS.drawImage(this.uri, frame * this.meta.ogSizeX, 0, this.meta.ogSizeX, this.meta.ogSizeY, this.x, this.y, this.meta.displaySizeW, this.meta.displaySizeH, 1, this.a, this.meta.rotShiftX / 2, this.meta.rotShiftY / 2);
 
-		stroke_gb(this);
+		healthBar(this);
 	}
 	pointAtPlayer(player) {
 		this.a = Math.atan2(this.y - player.y, this.x - player.x) + Math.PI / 2;
@@ -317,32 +266,3 @@ function wallBounce_gb(el) {
 	el.y += el.by;
 }
 
-export function stroke_gb(el, fillColor = '#FF4433') {
-	ctx.lineCap = 'round';
-
-	ctx.beginPath();
-	ctx.lineWidth = 8;
-	ctx.strokeStyle = '#222';
-	ctx.moveTo(el.x - 30, el.y + el.meta.collisionRadius * 1.2);
-	ctx.lineTo(el.x + 30, el.y + el.meta.collisionRadius * 1.2);
-	ctx.stroke();
-
-	const newHealthRatio = el.meta.health / el.meta.maxHealth;
-	el.meta.healthRatio = (el.meta.healthRatio * 4 + newHealthRatio) / 5;
-
-	ctx.beginPath();
-	ctx.lineWidth = 6;
-	ctx.strokeStyle = fillColor;
-	ctx.moveTo(el.x - 30, el.y + el.meta.collisionRadius * 1.2);
-	ctx.lineTo(el.x + 60 * (el.meta.healthRatio - 0.5), el.y + el.meta.collisionRadius * 1.2);
-	ctx.stroke();
-
-	ctx.save();
-	ctx.shadowColor = 'black';
-	ctx.shadowOffsetX = 0;
-	ctx.shadowOffsetY = 0;
-	ctx.shadowBlur = 5;
-	const textHeight = ctxS.fillText(el.meta.name, 'white', 14, el.x + 30, el.y + el.meta.collisionRadius * 1.2 + 6, 'tr');
-	if (el.meta.name == 'MACHINE') ctxS.fillText(el.meta.name2, 'white', 14, el.x + 30, el.y + el.meta.collisionRadius * 1.2 + textHeight + 8, 'tr');
-	ctx.restore();
-}

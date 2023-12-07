@@ -1,6 +1,6 @@
 import { ctxS } from '../defaults/ctxS.js';
 import { canvas, ctx } from '../defaults/init.js';
-import { stroke_gb } from '../defaults/classes.js'; // classes
+import { healthBar } from '../scripts/healthBar.js'; // draw healthbar
 
 export function exePlayer(player, keyPresses, mouse, asset, frame) {
 	// update player xy
@@ -40,7 +40,7 @@ export function exePlayer(player, keyPresses, mouse, asset, frame) {
 
 	// health
 	player.meta.health = Math.min(player.meta.health + 0.004, player.meta.maxHealth);
-	stroke_gb(player, '#0F0');
+	healthBar(player, '#0F0');
 
 	return player;
 }

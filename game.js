@@ -6,7 +6,8 @@ import { ctxS } from './defaults/ctxS.js'; // ctx functions simplified
 
 import { default as levels } from '../defaults/levels.json' assert { type: 'json' }; // JSON file with all the levels
 
-import { Projectile, EnemyT1, EnemyT2, EnemyT3 } from './defaults/classes.js'; // classes
+import { EnemyT1, EnemyT2, EnemyT3 } from './defaults/enemiesClass.js';
+import { Projectile } from './defaults/projectileClass.js';
 
 import { exePlayer } from './scripts/player.js'; // player script
 import { projectiles } from './scripts/projectiles.js'; // projectile script
@@ -24,7 +25,7 @@ ctx.imageSmoothingEnabled = false;
 import { asset, rotatingAsset } from './scripts/loadAssets.js';
 
 /* ~~~ game variables ~~~ */
-let currentLevel = 0; // levels starts at ONE!!!
+let currentLevel = 4; // levels starts at ONE!!!
 let frame;
 let projectilesList = [];
 let enemiesList = [];
