@@ -38,7 +38,8 @@ export function exePlayer(player, keyPresses, mouse, asset, frame) {
 	ctxS.drawImage(asset.player, (player.frame % 4) * 16, Math.floor(player.frame / 4) * 24, 16, 24, player.x, player.y, 60, 90, 1, player.a, 40, 35);
 	player.frame = frame % 8;
 
-	// draw health
+	// health
+	player.meta.health = Math.min(player.meta.health + 0.004, player.meta.maxHealth);
 	stroke_gb(player, '#0F0');
 
 	return player;
