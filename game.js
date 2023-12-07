@@ -134,7 +134,12 @@ document.addEventListener('keyup', (e) => {
 /* ~~~~~~~~~~~~~~~ */
 /* ~~~~~~~~~~~~~~~ */
 
-function main() {
+let lastTs = 0;
+function main(ts) {
+	let fps = 1000/(ts - lastTs);
+	lastTs = ts;
+	ctxS.fillText(Math.round(fps), '#FFF', 21, 0, 0, 'tl');
+
 	frame = Math.floor(Date.now() / 100);
 
 	// background
