@@ -82,8 +82,7 @@ export class EnemyT1 {
 		wallBounce_gb(this);
 	}
 	collide(player) {
-		[player.vx, player.vy] = [Math.cos(this.a) * 5, Math.sin(this.a) * 5];
-		this.ma = this.a;
+		[player.vx, player.vy] = [Math.cos(this.ma) * 5, Math.sin(this.ma) * 5];
 		this.v = -10;
 
 		return player;
@@ -175,8 +174,7 @@ export class EnemyT2 {
 		wallBounce_gb(this);
 	}
 	collide(player) {
-		[player.vx, player.vy] = [Math.cos(this.a) * 5, Math.sin(this.a) * 5];
-		this.ma = this.a;
+		[player.vx, player.vy] = [Math.cos(this.ma) * 5, Math.sin(this.ma) * 5];
 		this.v = -10;
 
 		return player;
@@ -199,15 +197,16 @@ export class EnemyT3 {
 		this.y = y;
 		this.ma = 0;
 		this.a = 0;
-		this.v = 0;
-		this.acc = 0.6;
+		this.vx = 0;
+		this.vy = 0;
+		this.acc = 0.275;
 		this.uri = asset.enemyT3;
 
 		this.bx = 0;
 		this.by = 0;
 
 		this.meta = {
-			name: 'BOSS',
+			name: 'MEGA',
 			enemyLevel: 2,
 
 			displaySizeW: 96,
@@ -217,28 +216,47 @@ export class EnemyT3 {
 			rotShiftX: 128,
 			rotShiftY: 224,
 			lastProjectile: null,
-			collisionRadius: 48,
+			collisionRadius: 40,
 
 			hasWallCollisionYet: false,
 
-			health: 25,
-			maxHealth: 25,
+			health: 80,
+			maxHealth: 80,
 			healthRatio: 1,
 		};
 	}
 
 	drawImage(frame) {
-		ctxS.drawImage(this.uri, frame * this.meta.ogSizeX, 0, this.meta.ogSizeX, this.meta.ogSizeY, this.x, this.y, this.meta.displaySizeW, this.meta.displaySizeH, 1, this.a, this.meta.rotShiftX / 2, this.meta.rotShiftY / 2);
+		ctxS.drawImage(this.uri, frame * this.meta.ogSizeX, 0, this.meta.ogSizeX, this.meta.ogSizeY, this.x, this.y, this.meta.displaySizeW, this.meta.displaySizeH, 1, this.a - Math.PI / 2, this.meta.rotShiftX / 2, this.meta.rotShiftY / 2);
 
 		healthBar(this);
 	}
 	pointAtPlayer(player) {
-		this.a = Math.atan2(this.y - player.y, this.x - player.x) + Math.PI / 2;
+		//this.a = Math.atan2(player.y - this.y, player.x - this.x);
+		let v = Math.sqrt(player.vx ** 2 + player.vy ** 2);
+		let w = 9;
+		let alpha = Math.atan2(this.y - player.y, this.x - player.x) - Math.atan2(player.vy, player.vx);
+
+		let extra = Math.asin((Math.sin(alpha) * v) / w);
+
+		if (isNaN(extra)) console.error('The aiming calculation of Enemy3 could not be done because it is not in the living range of arcsin');
+
+		let tga = extra + Math.atan2(player.y - this.y, player.x - this.x);
+		this.a = (this.a * 4 + tga) / 5
 	}
 	move(player) {
-		const dToP = Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2);
-		const aToP = Math.atan2(this.y - player.y, this.x - player.x) + Math.PI / 2;
+		this.ma = Math.atan2(player.y - this.y, player.x - this.x);
 
+		const dToP = Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2);
+		if (dToP < this.meta.collisionRadius + player.meta.collisionRadius) player = this.collide(player);
+
+		this.vx += Math.cos(this.ma) * this.acc;
+		this.vy += Math.sin(this.ma) * this.acc;
+		this.x += this.vx;
+		this.y += this.vy;
+
+		this.vx *= 0.97;
+		this.vy *= 0.97;
 		return player;
 	}
 	wallBounce() {
@@ -248,14 +266,20 @@ export class EnemyT3 {
 		}
 		wallBounce_gb(this);
 	}
+	collide(player) {
+		[player.vx, player.vy] = [Math.cos(this.ma) * 10, Math.sin(this.ma) * 10];
+		this.vx = -2.5 * Math.cos(this.ma);
+		this.vy = -2.5 * Math.sin(this.ma);
+
+		return player;
+	}
 	shoot(frame, projectilesList) {
-		/*
 		if (frame % 4 == 0 && Date.now() - this.meta.lastProjectile > 100) {
-			projectilesList.push(new Projectile(this.x, this.y, this.ma + Math.PI / 2, 6, asset.projectiles, 2, 0, 3));
-			this.v -= 8;
+			projectilesList.push(new Projectile(this.x, this.y, this.a + Math.PI / 2, 9, asset.projectiles, 2, 0, 3));
+			this.vx = -Math.cos(this.a);
+			this.vy = -Math.sin(this.a);
 			this.meta.lastProjectile = Date.now();
 		}
-		*/
 		return projectilesList;
 	}
 }
