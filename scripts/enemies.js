@@ -7,25 +7,26 @@ import { Projectile } from '../scripts/projectiles.js';
 export function enemies(enemiesList, player, projectilesList, frame) {
 	enemiesList.forEach((el, i) => {
 		if (el.meta.health < 0) {
+			if ('dieDance' in el) projectilesList = el?.dieDance(projectilesList);
 			enemiesList.splice(i, 1);
 		} else {
 			el.drawImage(frame % 2);
 			el.pointAtPlayer(player);
 			el.wallBounce();
 			player = el.move(player);
-			projectilesList = el.shoot(frame, projectilesList);
+			[projectilesList, enemiesList] = el.shoot(frame, projectilesList, enemiesList);
 		}
 	});
 	return [enemiesList, player, projectilesList];
 }
 
 export class EnemyT1 {
-	constructor(x, y) {
+	constructor(x, y, v = 0) {
 		this.x = x;
 		this.y = y;
 		this.ma = 0;
 		this.a = 0;
-		this.v = 0;
+		this.v = v;
 		this.acc = 0.4;
 		this.uri = asset.enemyT1;
 
@@ -87,7 +88,7 @@ export class EnemyT1 {
 
 		return player;
 	}
-	shoot(frame, projectilesList) {
+	shoot(frame, projectilesList, enemiesList) {
 		if (frame % 10 == 0 && Date.now() - this.meta.lastProjectile > 100) {
 			this.meta.lastProjectile = Date.now();
 
@@ -97,7 +98,7 @@ export class EnemyT1 {
 				this.v -= 8;
 			}, Math.random() * 200);
 		}
-		return projectilesList;
+		return [projectilesList, enemiesList];
 	}
 }
 
@@ -179,7 +180,7 @@ export class EnemyT2 {
 
 		return player;
 	}
-	shoot(_, projectilesList) {
+	shoot(_, projectilesList, enemiesList) {
 		if (this.meta.hasWallCollisionYet && Math.floor((Date.now() + this.meta.randomShootingTimingShift) / 2000) % 3 == 0 && Date.now() - this.meta.lastProjectile > 100) {
 			this.meta.lastProjectile = Date.now();
 
@@ -187,7 +188,7 @@ export class EnemyT2 {
 			rotatingAsset.gun1.play();
 			this.v -= 5;
 		}
-		return projectilesList;
+		return [projectilesList, enemiesList];
 	}
 }
 
@@ -199,7 +200,7 @@ export class EnemyT3 {
 		this.a = 0;
 		this.vx = 0;
 		this.vy = 0;
-		this.acc = 0.275;
+		this.acc = [0.22, 0.5, 0, 0];
 		this.uri = asset.enemyT3;
 
 		this.bx = 0;
@@ -223,26 +224,52 @@ export class EnemyT3 {
 			health: 80,
 			maxHealth: 80,
 			healthRatio: 1,
+
+			attackStatus: 0,
+			attackStatusCount: 0,
+			attackStatusDuration: {
+				0: 800,
+				1: 400,
+				2: 600,
+				3: 80,
+			},
+			attackStatusProgress: 0,
 		};
 	}
+	/*
+	0 - normal shoot & move forward
+	1 - rammer
+	2 - static but better shooting
+	3 - make birth
+	*/
 
 	drawImage(frame) {
 		ctxS.drawImage(this.uri, frame * this.meta.ogSizeX, 0, this.meta.ogSizeX, this.meta.ogSizeY, this.x, this.y, this.meta.displaySizeW, this.meta.displaySizeH, 1, this.a - Math.PI / 2, this.meta.rotShiftX / 2, this.meta.rotShiftY / 2);
 
+		if (++this.meta.attackStatusCount > this.meta.attackStatusDuration[this.meta.attackStatus]) {
+			this.meta.attackStatus = ++this.meta.attackStatus % Object.keys(this.meta.attackStatusDuration).length;
+			this.meta.attackStatusCount = 0;
+			this.meta.attackStatusProgress = 0;
+		}
+		console.log(this.meta.attackStatus);
+
 		healthBar(this);
 	}
 	pointAtPlayer(player) {
-		//this.a = Math.atan2(player.y - this.y, player.x - this.x);
-		let v = Math.sqrt(player.vx ** 2 + player.vy ** 2);
-		let w = 9;
-		let alpha = Math.atan2(this.y - player.y, this.x - player.x) - Math.atan2(player.vy, player.vx);
+		if (this.meta.attackStatus == 2) {
+			let v = Math.sqrt(player.vx ** 2 + player.vy ** 2);
+			let w = 10;
+			let alpha = Math.atan2(this.y - player.y, this.x - player.x) - Math.atan2(player.vy, player.vx);
 
-		let extra = Math.asin((Math.sin(alpha) * v) / w);
+			let extra = Math.asin((Math.sin(alpha) * v) / w);
 
-		if (isNaN(extra)) console.error('The aiming calculation of Enemy3 could not be done because it is not in the living range of arcsin');
+			if (isNaN(extra)) console.error('The aiming calculation of Enemy3 could not be done because it is not in the living range of arcsin.');
 
-		let tga = extra + Math.atan2(player.y - this.y, player.x - this.x);
-		this.a = (this.a * 4 + tga) / 5
+			let tga = extra + Math.atan2(player.y - this.y, player.x - this.x);
+			this.a = (this.a * 4 + tga) / 5;
+		} else {
+			this.a = this.ma;
+		}
 	}
 	move(player) {
 		this.ma = Math.atan2(player.y - this.y, player.x - this.x);
@@ -250,8 +277,8 @@ export class EnemyT3 {
 		const dToP = Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2);
 		if (dToP < this.meta.collisionRadius + player.meta.collisionRadius) player = this.collide(player);
 
-		this.vx += Math.cos(this.ma) * this.acc;
-		this.vy += Math.sin(this.ma) * this.acc;
+		this.vx += Math.cos(this.ma) * this.acc[this.meta.attackStatus];
+		this.vy += Math.sin(this.ma) * this.acc[this.meta.attackStatus];
 		this.x += this.vx;
 		this.y += this.vy;
 
@@ -273,12 +300,22 @@ export class EnemyT3 {
 
 		return player;
 	}
-	shoot(frame, projectilesList) {
-		if (frame % 4 == 0 && Date.now() - this.meta.lastProjectile > 100) {
-			projectilesList.push(new Projectile(this.x, this.y, this.a + Math.PI / 2, 9, asset.projectiles, 2, 0, 3));
-			this.vx = -Math.cos(this.a);
-			this.vy = -Math.sin(this.a);
+	shoot(frame, projectilesList, enemiesList) {
+		if ((frame % 2 == 0 && Date.now() - this.meta.lastProjectile > 100 && this.meta.attackStatus != 1 && this.meta.attackStatus != 3) || (this.meta.attackStatus == 1 && ++this.meta.attackStatusProgress % 4 == 0)) {
+			projectilesList.push(new Projectile(this.x, this.y, this.a + Math.PI / 2 - (this.meta.attackStatus == 1) * Math.PI + (this.meta.attackStatus != 2) * 0.2 * (Math.random() - 0.5), 12 - (this.meta.attackStatus == 1) * 5, asset.projectiles, 2, 0, 3));
+			if (this.meta.attackStatus == 2) {
+				this.vx = -1 * Math.cos(this.a);
+				this.vy = -1 * Math.sin(this.a);
+			}
 			this.meta.lastProjectile = Date.now();
+		} else if (this.meta.attackStatus == 3 && ++this.meta.attackStatusProgress % 15 == 0) {
+			enemiesList.push(new EnemyT1(this.x, this.y, -10));
+		}
+		return [projectilesList, enemiesList];
+	}
+	dieDance(projectilesList) {
+		for (let i = 0; i < 36; i++) {
+			projectilesList.push(new Projectile(this.x, this.y, ((i * 10) / 180) * Math.PI, 10, asset.projectiles, 2, 0, 3));
 		}
 		return projectilesList;
 	}

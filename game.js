@@ -21,7 +21,7 @@ ctx.imageSmoothingEnabled = false;
 import { asset, rotatingAsset } from './scripts/loadAssets.js';
 
 /* ~~~ game variables ~~~ */
-let currentLevel = 4; // levels starts at ONE!!!
+let currentLevel = 5; // levels starts at ONE!!!
 let frame;
 let projectilesList = [];
 let enemiesList = [];

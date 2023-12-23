@@ -49,7 +49,7 @@ export class Projectile {
 		} else {
 			// hit player
 			if (Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2) < player.meta.collisionRadius + 8) {
-				player.meta.health -= 1 + (this.type == 2);
+				player.meta.health -= 1 + 0 * (this.type == 2);
 				projectilesList.splice(projectilesList.indexOf(bulletRaw), 1);
 			}
 		}
