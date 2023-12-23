@@ -251,7 +251,6 @@ export class EnemyT3 {
 			this.meta.attackStatusCount = 0;
 			this.meta.attackStatusProgress = 0;
 		}
-		console.log(this.meta.attackStatus);
 
 		healthBar(this);
 	}

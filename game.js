@@ -21,7 +21,7 @@ ctx.imageSmoothingEnabled = false;
 import { asset, rotatingAsset } from './scripts/loadAssets.js';
 
 /* ~~~ game variables ~~~ */
-let currentLevel = 5; // levels starts at ONE!!!
+let currentLevel = 0; // levels starts at ONE!!!
 let frame;
 let projectilesList = [];
 let enemiesList = [];
@@ -212,6 +212,7 @@ function loadLevel(levelID) {
 				upcomingEnemies--;
 			}, el.timeout + 0.5);
 		});
+		player.meta.health = Math.max(player.meta.health, player.meta.maxHealth * 0.8);
 		return true;
 	}
 }

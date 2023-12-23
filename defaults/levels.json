@@ -132,6 +132,26 @@
     "6": [
         {
             "enemyType": 1,
+            "startX": 70,
+            "startY": -20,
+            "timeout": 0
+        },
+        {
+            "enemyType": 2,
+            "startX": 30,
+            "startY": -20,
+            "timeout": 1500
+        },
+        {
+            "enemyType": 3,
+            "startX": 50,
+            "startY": -100,
+            "timeout": 2000
+        }
+    ],
+    "7": [
+        {
+            "enemyType": 1,
             "startX": 30,
             "startY": 120,
             "timeout": 0
@@ -171,6 +191,26 @@
             "startX": 120,
             "startY": 60,
             "timeout": 20000
+        }
+    ],
+    "8": [
+        {
+            "enemyType": 3,
+            "startX": 50,
+            "startY": 200,
+            "timeout": 0
+        },
+        {
+            "enemyType": 2,
+            "startX": -20,
+            "startY": 50,
+            "timeout": 4000
+        },
+        {
+            "enemyType": 3,
+            "startX": 50,
+            "startY": -100,
+            "timeout": 6000
         }
     ]
 }
