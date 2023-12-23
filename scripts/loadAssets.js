@@ -80,8 +80,8 @@ class RotatingSfxChannel {
 }
 
 let rotatingAsset = {
-	gun1: new RotatingSfxChannel('./assets/sfx/gun1.mp3', 30, 0.35),
-	gun2: new RotatingSfxChannel('./assets/sfx/gun2.mp3', 5, 0.75),
+	gun1: new RotatingSfxChannel('./assets/sfx/gun1.mp3', 40, 0.35),
+	gun2: new RotatingSfxChannel('./assets/sfx/gun2.mp3', 5, 0.6),
 };
 
 export { asset, rotatingAsset };

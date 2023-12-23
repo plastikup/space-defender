@@ -303,6 +303,7 @@ export class EnemyT3 {
 	shoot(frame, projectilesList, enemiesList) {
 		if ((frame % 2 == 0 && Date.now() - this.meta.lastProjectile > 100 && this.meta.attackStatus != 1 && this.meta.attackStatus != 3) || (this.meta.attackStatus == 1 && ++this.meta.attackStatusProgress % 4 == 0)) {
 			projectilesList.push(new Projectile(this.x, this.y, this.a + Math.PI / 2 - (this.meta.attackStatus == 1) * Math.PI + (this.meta.attackStatus != 2) * 0.2 * (Math.random() - 0.5), 12 - (this.meta.attackStatus == 1) * 5, asset.projectiles, 2, 0, 3));
+			rotatingAsset.gun1.play();
 			if (this.meta.attackStatus == 2) {
 				this.vx = -1 * Math.cos(this.a);
 				this.vy = -1 * Math.sin(this.a);
