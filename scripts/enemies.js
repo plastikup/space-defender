@@ -86,6 +86,9 @@ export class EnemyT1 {
 		[player.vx, player.vy] = [Math.cos(this.ma) * 5, Math.sin(this.ma) * 5];
 		this.v = -10;
 
+		this.meta.health--;
+		player.meta.health--;
+
 		return player;
 	}
 	shoot(frame, projectilesList, enemiesList) {
@@ -178,6 +181,9 @@ export class EnemyT2 {
 		[player.vx, player.vy] = [Math.cos(this.ma) * 5, Math.sin(this.ma) * 5];
 		this.v = -10;
 
+		this.meta.health--;
+		player.meta.health--;
+
 		return player;
 	}
 	shoot(_, projectilesList, enemiesList) {
@@ -230,7 +236,7 @@ export class EnemyT3 {
 			attackStatusDuration: {
 				0: 600,
 				1: 400,
-				2: 80,
+				2: 400,
 				3: 600,
 			},
 			attackStatusProgress: 0,
@@ -297,6 +303,9 @@ export class EnemyT3 {
 		this.vx = -2.5 * Math.cos(this.ma);
 		this.vy = -2.5 * Math.sin(this.ma);
 
+		this.meta.health--;
+		player.meta.health -= 2;
+
 		return player;
 	}
 	shoot(frame, projectilesList, enemiesList) {
@@ -308,7 +317,7 @@ export class EnemyT3 {
 				this.vy = -1 * Math.sin(this.a);
 			}
 			this.meta.lastProjectile = Date.now();
-		} else if (this.meta.attackStatus == 2 && ++this.meta.attackStatusProgress % 15 == 0) {
+		} else if (this.meta.attackStatus == 2 && ++this.meta.attackStatusProgress % 100 == 50) {
 			enemiesList.push(new EnemyT1(this.x, this.y, -10));
 		}
 		return [projectilesList, enemiesList];
