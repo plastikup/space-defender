@@ -45,8 +45,8 @@ let player = {
 	meta: {
 		frame: 0,
 		collisionRadius: 32,
-		health: 30,
-		maxHealth: 30,
+		health: 40,
+		maxHealth: 40,
 		healthRatio: 1,
 		name: 'YOU',
 	},
@@ -198,7 +198,7 @@ function main(ts) {
 }
 
 function loadLevel(levelID) {
-	if (levels[levelID].enemySpawn == undefined) {
+	if (levels[levelID] == undefined) {
 		alert('(this is a placeholder) you finished every level!');
 		return false;
 	} else {
@@ -217,7 +217,7 @@ function loadLevel(levelID) {
 		try {
 			asset.music[currentTrack].pause();
 		} catch (error) {
-			console.info('No track to pause.')
+			console.info('No track to pause.');
 		}
 		currentTrack = levels[levelID].track;
 		asset.music[currentTrack].play();

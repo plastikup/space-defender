@@ -44,6 +44,58 @@
             {
                 "enemyType": 2,
                 "startX": -20,
+                "startY": -20,
+                "timeout": 0
+            },
+            {
+                "enemyType": 2,
+                "startX": 120,
+                "startY": -20,
+                "timeout": 0
+            },
+            {
+                "enemyType": 1,
+                "startX": 120,
+                "startY": 20,
+                "timeout": 5000
+            }
+        ],
+        "track": "non_stop"
+    },
+    "4": {
+        "enemySpawn": [
+            {
+                "enemyType": 1,
+                "startX": 30,
+                "startY": -20,
+                "timeout": 0
+            },
+            {
+                "enemyType": 1,
+                "startX": 70,
+                "startY": -20,
+                "timeout": 0
+            },
+            {
+                "enemyType": 2,
+                "startX": 90,
+                "startY": -20,
+                "timeout": 5000
+            },
+            {
+                "enemyType": 2,
+                "startX": 10,
+                "startY": -20,
+                "timeout": 5000
+            }
+        ],
+        "track": "non_stop"
+    },
+    "5": {
+        "enemySpawn": [
+            {
+                "enemyType": 2,
+                "startX": -20,
                 "startY": 75,
                 "timeout": 0
             },
@@ -74,7 +126,7 @@
         ],
         "track": "non_stop"
     },
-    "4": {
+    "6": {
         "enemySpawn": [
             {
                 "enemyType": 1,
@@ -133,7 +185,7 @@
         ],
         "track": "savage"
     },
-    "5": {
+    "7": {
         "enemySpawn": [
             {
                 "enemyType": 3,
@@ -144,7 +196,7 @@
         ],
         "track": "savage"
     },
-    "6": {
+    "8": {
         "enemySpawn": [
             {
                 "enemyType": 1,
@@ -167,7 +219,7 @@
         ],
         "track": "savage"
     },
-    "7": {
+    "9": {
         "enemySpawn": [
             {
                 "enemyType": 1,
@@ -203,18 +255,18 @@
                 "enemyType": 1,
                 "startX": 120,
                 "startY": 40,
-                "timeout": 20000
+                "timeout": 30000
             },
             {
                 "enemyType": 1,
                 "startX": 120,
                 "startY": 60,
-                "timeout": 20000
+                "timeout": 30000
             }
         ],
         "track": "apocalypse"
     },
-    "8": {
+    "10": {
         "enemySpawn": [
             {
                 "enemyType": 3,
@@ -223,9 +275,15 @@
                 "timeout": 0
             },
             {
-                "enemyType": 2,
+                "enemyType": 1,
                 "startX": -20,
-                "startY": 50,
+                "startY": 30,
+                "timeout": 4000
+            },
+            {
+                "enemyType": 1,
+                "startX": -20,
+                "startY": 70,
                 "timeout": 4000
             },
             {

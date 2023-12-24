@@ -93,7 +93,4 @@ let rotatingAsset = {
 	gun2: new RotatingSfxChannel('./assets/sfx/gun2.mp3', 5, 0.6),
 };
 
-// music
-
-
 export { asset, rotatingAsset };
