@@ -221,17 +221,17 @@ export class EnemyT3 {
 
 			hasWallCollisionYet: false,
 
-			health: 80,
-			maxHealth: 80,
+			health: 100,
+			maxHealth: 100,
 			healthRatio: 1,
 
 			attackStatus: 0,
 			attackStatusCount: 0,
 			attackStatusDuration: {
-				0: 800,
+				0: 600,
 				1: 400,
-				2: 600,
-				3: 80,
+				2: 80,
+				3: 600,
 			},
 			attackStatusProgress: 0,
 		};
@@ -239,8 +239,8 @@ export class EnemyT3 {
 	/*
 	0 - normal shoot & move forward
 	1 - rammer
-	2 - static but better shooting
-	3 - make birth
+	2 - make birth
+	3 - static but better shooting
 	*/
 
 	drawImage(frame) {
@@ -255,7 +255,7 @@ export class EnemyT3 {
 		healthBar(this);
 	}
 	pointAtPlayer(player) {
-		if (this.meta.attackStatus == 2) {
+		if (this.meta.attackStatus == 3) {
 			let v = Math.sqrt(player.vx ** 2 + player.vy ** 2);
 			let w = 10;
 			let alpha = Math.atan2(this.y - player.y, this.x - player.x) - Math.atan2(player.vy, player.vx);
@@ -300,15 +300,15 @@ export class EnemyT3 {
 		return player;
 	}
 	shoot(frame, projectilesList, enemiesList) {
-		if ((frame % 2 == 0 && Date.now() - this.meta.lastProjectile > 100 && this.meta.attackStatus != 1 && this.meta.attackStatus != 3) || (this.meta.attackStatus == 1 && ++this.meta.attackStatusProgress % 4 == 0)) {
-			projectilesList.push(new Projectile(this.x, this.y, this.a + Math.PI / 2 - (this.meta.attackStatus == 1) * Math.PI + (this.meta.attackStatus != 2) * 0.2 * (Math.random() - 0.5), 12 - (this.meta.attackStatus == 1) * 5, asset.projectiles, 2, 0, 3));
+		if ((frame % (2 + (this.meta.attackStatus == 3)) == 0 && Date.now() - this.meta.lastProjectile > 100 && this.meta.attackStatus != 1 && this.meta.attackStatus != 2) || (this.meta.attackStatus == 1 && ++this.meta.attackStatusProgress % 4 == 0)) {
+			projectilesList.push(new Projectile(this.x, this.y, this.a + Math.PI / 2 - (this.meta.attackStatus == 1) * Math.PI + (this.meta.attackStatus != 3) * 0.2 * (Math.random() - 0.5), 12 - (this.meta.attackStatus == 1) * 5, asset.projectiles, 2, 0, 3));
 			rotatingAsset.gun1.play();
-			if (this.meta.attackStatus == 2) {
+			if (this.meta.attackStatus == 3) {
 				this.vx = -1 * Math.cos(this.a);
 				this.vy = -1 * Math.sin(this.a);
 			}
 			this.meta.lastProjectile = Date.now();
-		} else if (this.meta.attackStatus == 3 && ++this.meta.attackStatusProgress % 15 == 0) {
+		} else if (this.meta.attackStatus == 2 && ++this.meta.attackStatusProgress % 15 == 0) {
 			enemiesList.push(new EnemyT1(this.x, this.y, -10));
 		}
 		return [projectilesList, enemiesList];

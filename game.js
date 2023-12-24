@@ -44,8 +44,8 @@ let player = {
 	meta: {
 		frame: 0,
 		collisionRadius: 32,
-		health: 25,
-		maxHealth: 25,
+		health: 30,
+		maxHealth: 30,
 		healthRatio: 1,
 		name: 'YOU',
 	},
