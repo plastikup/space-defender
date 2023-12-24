@@ -1,216 +1,240 @@
 {
-    "1": [
-        {
-            "enemyType": 1,
-            "startX": 20,
-            "startY": -20,
-            "timeout": 0
-        },
-        {
-            "enemyType": 1,
-            "startX": 80,
-            "startY": -20,
-            "timeout": 0
-        }
-    ],
-    "2": [
-        {
-            "enemyType": 2,
-            "startX": 50,
-            "startY": -20,
-            "timeout": 0
-        },
-        {
-            "enemyType": 1,
-            "startX": -20,
-            "startY": 20,
-            "timeout": 5000
-        },
-        {
-            "enemyType": 1,
-            "startX": 120,
-            "startY": 20,
-            "timeout": 5000
-        }
-    ],
-    "3": [
-        {
-            "enemyType": 2,
-            "startX": -20,
-            "startY": 75,
-            "timeout": 0
-        },
-        {
-            "enemyType": 2,
-            "startX": 120,
-            "startY": 75,
-            "timeout": 0
-        },
-        {
-            "enemyType": 2,
-            "startX": 50,
-            "startY": -20,
-            "timeout": 7500
-        },
-        {
-            "enemyType": 1,
-            "startX": -20,
-            "startY": 100,
-            "timeout": 15000
-        },
-        {
-            "enemyType": 1,
-            "startX": 120,
-            "startY": 100,
-            "timeout": 15000
-        }
-    ],
-    "4": [
-        {
-            "enemyType": 1,
-            "startX": -20,
-            "startY": -20,
-            "timeout": 0
-        },
-        {
-            "enemyType": 1,
-            "startX": 120,
-            "startY": -20,
-            "timeout": 0
-        },
-        {
-            "enemyType": 1,
-            "startX": -20,
-            "startY": 120,
-            "timeout": 0
-        },
-        {
-            "enemyType": 1,
-            "startX": 120,
-            "startY": 120,
-            "timeout": 0
-        },
-        {
-            "enemyType": 2,
-            "startX": 50,
-            "startY": -20,
-            "timeout": 7500
-        },
-        {
-            "enemyType": 2,
-            "startX": 50,
-            "startY": 120,
-            "timeout": 7500
-        },
-        {
-            "enemyType": 1,
-            "startX": 50,
-            "startY": -20,
-            "timeout": 8000
-        },
-        {
-            "enemyType": 1,
-            "startX": 50,
-            "startY": 120,
-            "timeout": 8000
-        },
-        {
-            "enemyType": 2,
-            "startX": 50,
-            "startY": 120,
-            "timeout": 25000
-        }
-    ],
-    "5": [
-        {
-            "enemyType": 3,
-            "startX": 50,
-            "startY": -100,
-            "timeout": 0
-        }
-    ],
-    "6": [
-        {
-            "enemyType": 1,
-            "startX": 70,
-            "startY": -20,
-            "timeout": 0
-        },
-        {
-            "enemyType": 2,
-            "startX": 30,
-            "startY": -20,
-            "timeout": 1500
-        },
-        {
-            "enemyType": 3,
-            "startX": 50,
-            "startY": -100,
-            "timeout": 2000
-        }
-    ],
-    "7": [
-        {
-            "enemyType": 1,
-            "startX": 30,
-            "startY": 120,
-            "timeout": 0
-        },
-        {
-            "enemyType": 1,
-            "startX": 50,
-            "startY": 120,
-            "timeout": 0
-        },
-        {
-            "enemyType": 1,
-            "startX": 70,
-            "startY": 120,
-            "timeout": 0
-        },
-        {
-            "enemyType": 3,
-            "startX": 50,
-            "startY": -100,
-            "timeout": 4000
-        },
-        {
-            "enemyType": 2,
-            "startX": -20,
-            "startY": 50,
-            "timeout": 12500
-        },
-        {
-            "enemyType": 1,
-            "startX": 120,
-            "startY": 40,
-            "timeout": 20000
-        },
-        {
-            "enemyType": 1,
-            "startX": 120,
-            "startY": 60,
-            "timeout": 20000
-        }
-    ],
-    "8": [
-        {
-            "enemyType": 3,
-            "startX": 50,
-            "startY": 200,
-            "timeout": 0
-        },
-        {
-            "enemyType": 2,
-            "startX": -20,
-            "startY": 50,
-            "timeout": 4000
-        },
-        {
-            "enemyType": 3,
-            "startX": 50,
-            "startY": -100,
-            "timeout": 6000
-        }
-    ]
+    "1": {
+        "enemySpawn": [
+            {
+                "enemyType": 1,
+                "startX": 20,
+                "startY": -20,
+                "timeout": 0
+            },
+            {
+                "enemyType": 1,
+                "startX": 80,
+                "startY": -20,
+                "timeout": 0
+            }
+        ],
+        "track": "non_stop"
+    },
+    "2": {
+        "enemySpawn": [
+            {
+                "enemyType": 2,
+                "startX": 50,
+                "startY": -20,
+                "timeout": 0
+            },
+            {
+                "enemyType": 1,
+                "startX": -20,
+                "startY": 20,
+                "timeout": 5000
+            },
+            {
+                "enemyType": 1,
+                "startX": 120,
+                "startY": 20,
+                "timeout": 5000
+            }
+        ],
+        "track": "non_stop"
+    },
+    "3": {
+        "enemySpawn": [
+            {
+                "enemyType": 2,
+                "startX": -20,
+                "startY": 75,
+                "timeout": 0
+            },
+            {
+                "enemyType": 2,
+                "startX": 120,
+                "startY": 75,
+                "timeout": 0
+            },
+            {
+                "enemyType": 2,
+                "startX": 50,
+                "startY": -20,
+                "timeout": 7500
+            },
+            {
+                "enemyType": 1,
+                "startX": -20,
+                "startY": 100,
+                "timeout": 15000
+            },
+            {
+                "enemyType": 1,
+                "startX": 120,
+                "startY": 100,
+                "timeout": 15000
+            }
+        ],
+        "track": "non_stop"
+    },
+    "4": {
+        "enemySpawn": [
+            {
+                "enemyType": 1,
+                "startX": -20,
+                "startY": -20,
+                "timeout": 0
+            },
+            {
+                "enemyType": 1,
+                "startX": 120,
+                "startY": -20,
+                "timeout": 0
+            },
+            {
+                "enemyType": 1,
+                "startX": -20,
+                "startY": 120,
+                "timeout": 0
+            },
+            {
+                "enemyType": 1,
+                "startX": 120,
+                "startY": 120,
+                "timeout": 0
+            },
+            {
+                "enemyType": 2,
+                "startX": 50,
+                "startY": -20,
+                "timeout": 7500
+            },
+            {
+                "enemyType": 2,
+                "startX": 50,
+                "startY": 120,
+                "timeout": 7500
+            },
+            {
+                "enemyType": 1,
+                "startX": 50,
+                "startY": -20,
+                "timeout": 8000
+            },
+            {
+                "enemyType": 1,
+                "startX": 50,
+                "startY": 120,
+                "timeout": 8000
+            },
+            {
+                "enemyType": 2,
+                "startX": 50,
+                "startY": 120,
+                "timeout": 25000
+            }
+        ],
+        "track": "savage"
+    },
+    "5": {
+        "enemySpawn": [
+            {
+                "enemyType": 3,
+                "startX": 50,
+                "startY": -100,
+                "timeout": 0
+            }
+        ],
+        "track": "savage"
+    },
+    "6": {
+        "enemySpawn": [
+            {
+                "enemyType": 1,
+                "startX": 70,
+                "startY": -20,
+                "timeout": 0
+            },
+            {
+                "enemyType": 2,
+                "startX": 30,
+                "startY": -20,
+                "timeout": 1500
+            },
+            {
+                "enemyType": 3,
+                "startX": 50,
+                "startY": -100,
+                "timeout": 2000
+            }
+        ],
+        "track": "savage"
+    },
+    "7": {
+        "enemySpawn": [
+            {
+                "enemyType": 1,
+                "startX": 30,
+                "startY": 120,
+                "timeout": 0
+            },
+            {
+                "enemyType": 1,
+                "startX": 50,
+                "startY": 120,
+                "timeout": 0
+            },
+            {
+                "enemyType": 1,
+                "startX": 70,
+                "startY": 120,
+                "timeout": 0
+            },
+            {
+                "enemyType": 3,
+                "startX": 50,
+                "startY": -100,
+                "timeout": 4000
+            },
+            {
+                "enemyType": 2,
+                "startX": -20,
+                "startY": 50,
+                "timeout": 12500
+            },
+            {
+                "enemyType": 1,
+                "startX": 120,
+                "startY": 40,
+                "timeout": 20000
+            },
+            {
+                "enemyType": 1,
+                "startX": 120,
+                "startY": 60,
+                "timeout": 20000
+            }
+        ],
+        "track": "apocalypse"
+    },
+    "8": {
+        "enemySpawn": [
+            {
+                "enemyType": 3,
+                "startX": 50,
+                "startY": 200,
+                "timeout": 0
+            },
+            {
+                "enemyType": 2,
+                "startX": -20,
+                "startY": 50,
+                "timeout": 4000
+            },
+            {
+                "enemyType": 3,
+                "startX": 50,
+                "startY": -100,
+                "timeout": 6000
+            }
+        ],
+        "track": "apocalypse"
+    }
 }

@@ -19,6 +19,7 @@ ctx.imageSmoothingEnabled = false;
 
 /* ~~~ assets ~~~ */
 import { asset, rotatingAsset } from './scripts/loadAssets.js';
+let currentTrack = null;
 
 /* ~~~ game variables ~~~ */
 let currentLevel = 0; // levels starts at ONE!!!
@@ -114,8 +115,6 @@ document.addEventListener('mousedown', (e) => {
 	addEventListener('mouseup', () => {
 		clearInterval(projectileInterval);
 	});
-
-	if (asset.music.bravePilots.paused) asset.music.bravePilots.play();
 });
 document.addEventListener('contextmenu', (event) => {
 	event.preventDefault();
@@ -199,11 +198,11 @@ function main(ts) {
 }
 
 function loadLevel(levelID) {
-	if (levels[levelID] == undefined) {
+	if (levels[levelID].enemySpawn == undefined) {
 		alert('(this is a placeholder) you finished every level!');
 		return false;
 	} else {
-		levels[levelID].forEach((el) => {
+		levels[levelID].enemySpawn.forEach((el) => {
 			upcomingEnemies++;
 			setTimeout(() => {
 				if (el.enemyType == 3) enemiesList.push(new EnemyT3((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
@@ -213,6 +212,16 @@ function loadLevel(levelID) {
 			}, el.timeout + 0.5);
 		});
 		player.meta.health = Math.max(player.meta.health, player.meta.maxHealth * 0.8);
+
+		// load new track
+		try {
+			asset.music[currentTrack].pause();
+		} catch (error) {
+			console.info('No track to pause.')
+		}
+		currentTrack = levels[levelID].track;
+		asset.music[currentTrack].play();
+
 		return true;
 	}
 }

@@ -7,6 +7,9 @@ let asset = {
 	music: {
 		bravePilots: new Audio('./assets/music/Brave Pilots.ogg'),
 		withoutFear: new Audio('./assets/music/Without Fear.ogg'),
+		non_stop: new Audio('./assets/music/ncs_tracks/non_stop.mp3'),
+		savage: new Audio('./assets/music/ncs_tracks/savage.mp3'),
+		apocalypse: new Audio('./assets/music/ncs_tracks/apocalypse.mp3'),
 	},
 	sfx: {
 		gun1: new Audio('./assets/sfx/gun1.mp3'),
@@ -27,6 +30,13 @@ asset.projectiles.src = './assets/ships/projectiles.png';
 asset.music.bravePilots.loop = true;
 asset.music.bravePilots.volume = 0.5;
 asset.music.withoutFear.loop = true;
+
+asset.music.non_stop.loop = true;
+asset.music.non_stop.volume = 0.25;
+asset.music.savage.loop = true;
+asset.music.savage.volume = 0.2;
+asset.music.apocalypse.loop = true;
+asset.music.apocalypse.volume = 0.25;
 
 asset.sfx.gun1.volume = 0.25;
 asset.sfx.gun2.volume = 0.8;
@@ -50,7 +60,6 @@ Object.entries(asset).forEach(([, multimedia]) => {
 });
 
 // virtual rotating channels (for fun sfx)
-
 class Channel {
 	constructor(uri, volume) {
 		this.sfx = new Audio(uri);
@@ -83,5 +92,8 @@ let rotatingAsset = {
 	gun1: new RotatingSfxChannel('./assets/sfx/gun1.mp3', 40, 0.35),
 	gun2: new RotatingSfxChannel('./assets/sfx/gun2.mp3', 5, 0.6),
 };
+
+// music
+
 
 export { asset, rotatingAsset };
