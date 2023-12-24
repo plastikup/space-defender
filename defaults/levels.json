@@ -14,7 +14,8 @@
                 "timeout": 0
             }
         ],
-        "track": "non_stop"
+        "track": "non_stop",
+        "levelName": "Wave 1 (easy)"
     },
     "2": {
         "enemySpawn": [
@@ -37,7 +38,8 @@
                 "timeout": 5000
             }
         ],
-        "track": "non_stop"
+        "track": "non_stop",
+        "levelName": "Wave 2 (easy)"
     },
     "3": {
         "enemySpawn": [
@@ -60,7 +62,8 @@
                 "timeout": 5000
             }
         ],
-        "track": "non_stop"
+        "track": "non_stop",
+        "levelName": "Wave 3 (easy)"
     },
     "4": {
         "enemySpawn": [
@@ -89,7 +92,8 @@
                 "timeout": 5000
             }
         ],
-        "track": "non_stop"
+        "track": "non_stop",
+        "levelName": "Wave 4 (easy)"
     },
     "5": {
         "enemySpawn": [
@@ -124,7 +128,8 @@
                 "timeout": 15000
             }
         ],
-        "track": "non_stop"
+        "track": "non_stop",
+        "levelName": "Wave 5 (easy)"
     },
     "6": {
         "enemySpawn": [
@@ -183,7 +188,8 @@
                 "timeout": 25000
             }
         ],
-        "track": "savage"
+        "track": "savage",
+        "levelName": "Wave 6 (medium)"
     },
     "7": {
         "enemySpawn": [
@@ -194,7 +200,8 @@
                 "timeout": 0
             }
         ],
-        "track": "savage"
+        "track": "savage",
+        "levelName": "Wave 7 (medium)"
     },
     "8": {
         "enemySpawn": [
@@ -217,7 +224,8 @@
                 "timeout": 2000
             }
         ],
-        "track": "savage"
+        "track": "savage",
+        "levelName": "Wave 8 (medium)"
     },
     "9": {
         "enemySpawn": [
@@ -264,7 +272,8 @@
                 "timeout": 30000
             }
         ],
-        "track": "apocalypse"
+        "track": "apocalypse",
+        "levelName": "Wave 9 (hard)"
     },
     "10": {
         "enemySpawn": [
@@ -293,6 +302,7 @@
                 "timeout": 6000
             }
         ],
-        "track": "apocalypse"
+        "track": "apocalypse",
+        "levelName": "Wave 10 (very hard)"
     }
 }

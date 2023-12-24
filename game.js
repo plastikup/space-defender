@@ -185,16 +185,16 @@ function main(ts) {
 		}
 	}
 
-	// current level progress
-	displayCards(currentLevel, enemiesList);
-
 	// load next level if every enemies are down
 	if (enemiesList.length == 0 && upcomingEnemies == 0) {
 		if (loadLevel(++currentLevel)) {
-			displayCards(currentLevel, enemiesList);
+			displayCards(levels[currentLevel].levelName, enemiesList);
 			requestAnimationFrame(main);
 		}
-	} else requestAnimationFrame(main);
+	} else {
+		displayCards(levels[currentLevel].levelName, enemiesList);
+		requestAnimationFrame(main);
+	}
 }
 
 function loadLevel(levelID) {

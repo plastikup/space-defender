@@ -55,9 +55,9 @@ class Card {
 	}
 }
 
-export function displayCards(currentLevel, enemiesList) {
+export function displayCards(levelName, enemiesList) {
 	updateCardsArray(enemiesList);
-	ctxS.fillText(`Wave ${currentLevel}`, '#FFF', 48, canvas.width / 2, 20, 'tc');
+	ctxS.fillText(levelName, '#FFF', 48, canvas.width / 2, 20, 'tc');
 	cards.forEach((card, i) => {
 		card.arrangeCards(cards.length, i);
 		card.drawCard();
