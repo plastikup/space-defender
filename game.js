@@ -3,7 +3,7 @@
 /* ~~~ imports ~~~ */
 import { ctxS } from './defaults/ctxS.js'; // ctx functions but better
 
-import { default as levels } from '../defaults/levels.json' assert { type: 'json' }; // JSON file with all the levels
+import { default as levels } from './defaults/levels.json' assert { type: 'json' }; // JSON file with all the levels
 
 import { EnemyT1, EnemyT2, EnemyT3, enemies } from './scripts/enemies.js';
 import { exePlayer } from './scripts/player.js';
@@ -276,7 +276,15 @@ function init() {
 	console.info('ready');
 
 	//if (loadLevel(currentLevel)) main();
-	loadingScreen();
+	setTimeout(async () => {
+		loadingScreen();
+
+		if (devset_playMusic) {
+			currentTrack = levels[currentLevel].track;
+			await asset.music[currentTrack].play();
+			console.log(asset.music[currentTrack].play());
+		}
+	}, 1000);
 }
 
 init();

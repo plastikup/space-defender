@@ -11,10 +11,6 @@ let asset = {
 		savage: new Audio('./assets/music/ncs_tracks/savage.mp3'),
 		apocalypse: new Audio('./assets/music/ncs_tracks/apocalypse.mp3'),
 	},
-	sfx: {
-		gun1: new Audio('./assets/sfx/gun1.mp3'),
-		gun2: new Audio('./assets/sfx/gun2.mp3'),
-	},
 	enemyT1: new Image(),
 	enemyT2: new Image(),
 	enemyT3: new Image(),
@@ -37,9 +33,6 @@ asset.music.savage.loop = true;
 asset.music.savage.volume = 0.2;
 asset.music.apocalypse.loop = true;
 asset.music.apocalypse.volume = 0.25;
-
-asset.sfx.gun1.volume = 0.25;
-asset.sfx.gun2.volume = 0.8;
 
 asset.enemyT1.src = './assets/ships/enemy-small.png';
 asset.enemyT2.src = './assets/ships/enemy-medium.png';
