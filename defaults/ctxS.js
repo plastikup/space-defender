@@ -62,6 +62,11 @@ export const ctxS = {
 			case 'tr':
 				ctx.fillText(text, x - boundingBox.width, y + boundingBox.actualBoundingBoxAscent + boundingBox.actualBoundingBoxDescent);
 				break;
+			case 'norm-c':
+				ctx.fillText(text, x - boundingBox.width / 2, y);
+				break;
+			case 'test_purposes':
+				break;
 
 			default:
 				ctx.fillText(text, x, y);

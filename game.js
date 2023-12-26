@@ -1,7 +1,7 @@
 'use strict';
 
 /* ~~~ imports ~~~ */
-import { ctxS } from './defaults/ctxS.js'; // ctx functions simplified
+import { ctxS } from './defaults/ctxS.js'; // ctx functions but better
 
 import { default as levels } from '../defaults/levels.json' assert { type: 'json' }; // JSON file with all the levels
 
@@ -22,11 +22,13 @@ import { asset, rotatingAsset } from './scripts/loadAssets.js';
 let currentTrack = null;
 
 /* ~~~ game variables ~~~ */
-let currentLevel = 0; // levels starts at ONE!!!
+let currentLevel = 1; // levels starts at ONE!!!
 let frame;
 let projectilesList = [];
 let enemiesList = [];
 let upcomingEnemies = 0;
+
+const devset_playMusic = true; // for me because im annoyed by my own music lol
 
 const mouse = {
 	x: 0,
@@ -94,30 +96,36 @@ document.addEventListener('mousemove', (e) => {
 
 // shoot
 document.addEventListener('mousedown', (e) => {
-	function piew() {
-		if (e.button == 0) {
-			projectilesList.push(new Projectile(player.x + Math.cos(player.a) * 5, player.y + Math.sin(player.a) * 5, player.a, 10, asset.projectiles, 16, 16, 0, 0, true));
-			projectilesList.push(new Projectile(player.x - Math.cos(player.a) * 5, player.y - Math.sin(player.a) * 5, player.a, 10, asset.projectiles, 16, 16, 0, 0, true));
+	if (loadingScreenAnimationId !== null) {
+		cancelAnimationFrame(loadingScreenAnimationId);
+		loadingScreenAnimationId = null;
+		loadLevel(currentLevel);
+	} else {
+		function piew() {
+			if (e.button == 0) {
+				projectilesList.push(new Projectile(player.x + Math.cos(player.a) * 5, player.y + Math.sin(player.a) * 5, player.a, 10, asset.projectiles, 16, 16, 0, 0, true));
+				projectilesList.push(new Projectile(player.x - Math.cos(player.a) * 5, player.y - Math.sin(player.a) * 5, player.a, 10, asset.projectiles, 16, 16, 0, 0, true));
 
-			rotatingAsset.gun2.play();
-		} else if (e.button == 2) {
-			const rando = Math.random() - 0.5;
-			projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, -1, true));
-			projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, 1, true));
+				rotatingAsset.gun2.play();
+			} else if (e.button == 2) {
+				const rando = Math.random() - 0.5;
+				projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, -1, true));
+				projectilesList.push(new Projectile(player.x, player.y, player.a + rando / 2, 12, asset.projectiles, 2, 16, 1, 1, true));
 
-			rotatingAsset.gun2.play();
+				rotatingAsset.gun2.play();
+			}
 		}
-	}
-	piew();
-	const projectileInterval = setInterval(() => {
 		piew();
-	}, 250);
-	addEventListener('mouseup', () => {
-		clearInterval(projectileInterval);
-	});
+		const projectileInterval = setInterval(() => {
+			piew();
+		}, 250);
+		addEventListener('mouseup', () => {
+			clearInterval(projectileInterval);
+		});
+	}
 });
-document.addEventListener('contextmenu', (event) => {
-	event.preventDefault();
+document.addEventListener('contextmenu', (e) => {
+	e.preventDefault();
 });
 
 // movement
@@ -187,10 +195,8 @@ function main(ts) {
 
 	// load next level if every enemies are down
 	if (enemiesList.length == 0 && upcomingEnemies == 0) {
-		if (loadLevel(++currentLevel)) {
-			displayCards(levels[currentLevel].levelName, enemiesList);
-			requestAnimationFrame(main);
-		}
+		currentLevel++;
+		loadingScreen();
 	} else {
 		displayCards(levels[currentLevel].levelName, enemiesList);
 		requestAnimationFrame(main);
@@ -199,8 +205,7 @@ function main(ts) {
 
 function loadLevel(levelID) {
 	if (levels[levelID] == undefined) {
-		alert('(this is a placeholder) you finished every level!');
-		return false;
+		//alert('(this is a placeholder) you finished every level!');
 	} else {
 		levels[levelID].enemySpawn.forEach((el) => {
 			upcomingEnemies++;
@@ -209,22 +214,60 @@ function loadLevel(levelID) {
 				else if (el.enemyType == 2) enemiesList.push(new EnemyT2((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
 				else enemiesList.push(new EnemyT1((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
 				upcomingEnemies--;
-			}, el.timeout + 0.5);
+			}, el.timeout + levels[levelID].globalTimeout);
 		});
 		player.meta.health = Math.max(player.meta.health, player.meta.maxHealth * 0.8);
 
 		// load new track
-		try {
-			asset.music[currentTrack].pause();
-		} catch (error) {
-			console.info('No track to pause.');
+		if (devset_playMusic) {
+			try {
+				asset.music[currentTrack].pause();
+			} catch (error) {
+				console.info('No track to pause.');
+			}
+			currentTrack = levels[levelID].track;
+			asset.music[currentTrack].play();
 		}
-		currentTrack = levels[levelID].track;
-		asset.music[currentTrack].play();
 
-		return true;
+		main();
 	}
 }
+
+function loadingScreen(timestamp) {
+	if (levels[currentLevel]?.loadingScreen === undefined) loadLevel(currentLevel);
+	else {
+		const lds = levels[currentLevel].loadingScreen;
+
+		// reset sandbox
+		projectilesList = [];
+		enemiesList = [];
+		player.x = canvas.width / 2;
+		player.y = canvas.height / 2;
+		player.meta.health = player.meta.maxHealth;
+
+		// background
+		ctxS.drawImage(asset.backgroundImage, 0, 0, asset.backgroundImage.width, asset.backgroundImage.height, -128 * (player.x / canvas.width), -128 * (player.y / canvas.height), canvas.width + 128, canvas.height + 128, 0.1);
+		// black square for contrast
+		ctxS.fillRect(0, 0, canvas.width, canvas.height, '#0002');
+		// title and subtitle
+		const titleHeight = ctxS.fillText(lds.title, '#faa', 48, canvas.width / 2, 20, 'tc');
+		ctxS.fillText(lds.subtitle, '#fff', 36, canvas.width / 2, 40 + titleHeight, 'tc');
+		// body content
+		const bodyHeight = ctxS.fillText('lg', '#fff', 40, canvas.width / 2, 20, 'test_purposes');
+		lds.content.forEach((line, i) => {
+			ctxS.fillText(line, '#fff', 28 + 8 * (line.charAt(0) == '-'), canvas.width / 2, canvas.height / 2 - bodyHeight * ((lds.content.length - 1) / 2 - i), 'c');
+		});
+		// footer content
+		ctxS.fillText(lds.tip, '#aaf', 24, canvas.width / 2, canvas.height - (40 + titleHeight), 'c');
+		// indication to click to continue
+		if (Math.sin(Date.now() / 64) > 0.5) {
+			ctxS.fillText('click to continue', '#666', 18, canvas.width / 2, canvas.height, 'norm-c');
+		}
+
+		loadingScreenAnimationId = requestAnimationFrame(loadingScreen);
+	}
+}
+let loadingScreenAnimationId = null;
 
 function init() {
 	player.w = asset.player.width;
@@ -232,7 +275,8 @@ function init() {
 
 	console.info('ready');
 
-	main();
+	//if (loadLevel(currentLevel)) main();
+	loadingScreen();
 }
 
 init();
