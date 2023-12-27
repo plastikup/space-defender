@@ -287,6 +287,24 @@
                 "timeout": 4000
             },
             {
+                "enemyType": 1,
+                "startX": 30,
+                "startY": -20,
+                "timeout": 4000
+            },
+            {
+                "enemyType": 1,
+                "startX": 50,
+                "startY": -20,
+                "timeout": 4000
+            },
+            {
+                "enemyType": 1,
+                "startX": 70,
+                "startY": -20,
+                "timeout": 4000
+            },
+            {
                 "enemyType": 2,
                 "startX": -20,
                 "startY": 50,
@@ -336,8 +354,20 @@
                 "timeout": 4000
             },
             {
-                "enemyType": 1,
+                "enemyType": 2,
                 "startX": -20,
+                "startY": 70,
+                "timeout": 4000
+            },
+            {
+                "enemyType": 2,
+                "startX": 120,
+                "startY": 30,
+                "timeout": 4000
+            },
+            {
+                "enemyType": 1,
+                "startX": 120,
                 "startY": 70,
                 "timeout": 4000
             },
@@ -350,7 +380,7 @@
         ],
         "globalTimeout": 0,
         "track": "apocalypse",
-        "levelName": "Wave 10 (very hard)"
+        "levelName": "Wave 10 (hard)"
     },
     "11": {
         "enemySpawn": [
@@ -401,6 +431,18 @@
                 "startX": -20,
                 "startY": 120,
                 "timeout": 5600
+            },
+            {
+                "enemyType": 3,
+                "startX": 50,
+                "startY": 150,
+                "timeout": 10000
+            },
+            {
+                "enemyType": 3,
+                "startX": 50,
+                "startY": -50,
+                "timeout": 50000
             }
         ],
         "globalTimeout": 2000,
@@ -414,9 +456,9 @@
                 "dynamites",
                 "",
                 "- -  difficulty  - -",
-                "holy shit!!"
+                "extreme!!"
             ],
-            "tip": "tip: NEVER touch the dynamites"
+            "tip": "tip: do NOT touch the dynamites!!"
         }
     },
     "12": {
@@ -456,6 +498,42 @@
                 "startX": 120,
                 "startY": 50,
                 "timeout": 5000
+            },
+            {
+                "enemyType": 1,
+                "startX": -20,
+                "startY": 30,
+                "timeout": 12000
+            },
+            {
+                "enemyType": 1,
+                "startX": -20,
+                "startY": 40,
+                "timeout": 12000
+            },
+            {
+                "enemyType": 1,
+                "startX": -20,
+                "startY": 50,
+                "timeout": 12000
+            },
+            {
+                "enemyType": 1,
+                "startX": -20,
+                "startY": 60,
+                "timeout": 12000
+            },
+            {
+                "enemyType": 2,
+                "startX": 120,
+                "startY": 50,
+                "timeout": 17000
+            },
+            {
+                "enemyType": 3,
+                "startX": 50,
+                "startY": -100,
+                "timeout": 22000
             }
         ],
         "globalTimeout": 0,
@@ -513,7 +591,7 @@
                 "timeout": 5000
             },
             {
-                "enemyType": 2,
+                "enemyType": 1,
                 "startX": 60,
                 "startY": 120,
                 "timeout": 5000
@@ -534,7 +612,19 @@
                 "enemyType": 3,
                 "startX": -50,
                 "startY": 200,
-                "timeout": 25000
+                "timeout": 17500
+            },
+            {
+                "enemyType": 3,
+                "startX": -50,
+                "startY": 200,
+                "timeout": 40000
+            },
+            {
+                "enemyType": 3,
+                "startX": 150,
+                "startY": 200,
+                "timeout": 60000
             }
         ],
         "globalTimeout": 1000,

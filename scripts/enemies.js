@@ -392,7 +392,7 @@ export class EnemyT4 {
 				projectilesList.push(new Projectile(this.x, this.y, Math.PI * 1.5, 6, asset.projectiles, 2, 0, 0));
 				rotatingAsset.gun1.play();
 
-				this.meta.health -= 0.25;
+				this.meta.health -= 0.4;
 			}, Math.random() * 200);
 		}
 		return [projectilesList, enemiesList];
@@ -402,24 +402,32 @@ export class EnemyT4 {
 			projectilesList.push(new Projectile(this.x, this.y, ((i * 20) / 180) * Math.PI, 10, asset.projectiles, 2, 0, 3));
 		}
 
-		const rando = Math.random();
-		if (rando < 0.2) {
-			// 20% chance to pop TWO dynamites
-			enemiesList.push(new EnemyT4(this.x + Math.random() * 50 - 25, this.y + Math.random() * 50 - 25));
-			enemiesList.push(new EnemyT4(this.x + Math.random() * 50 - 25, this.y + Math.random() * 50 - 25));
-		} else if (rando < 0.6) {
-			// 40% chance to pop 2T2 & 1T1
-			enemiesList.push(new EnemyT2(this.x, this.y));
+		if (enemiesList.length == 1) {
+			// if dynamite is the last enemy in the sandbox, there will always be 1T3, 1T2 and 1T1
+			enemiesList.push(new EnemyT3(this.x, this.y));
 			enemiesList.push(new EnemyT2(this.x, this.y));
 			enemiesList.push(new EnemyT1(this.x, this.y, -10));
-		} else if (rando < 0.9) {
-			// 40% chance to pop 2T2
-			enemiesList.push(new EnemyT2(this.x, this.y));
-			enemiesList.push(new EnemyT2(this.x, this.y));
 		} else {
-			// 10% chance to pop a 1T3
-			enemiesList.push(new EnemyT3(this.x, this.y));
+			const rando = Math.random();
+			if (rando < 0.2) {
+				// 20% chance to pop TWO dynamites
+				enemiesList.push(new EnemyT4(this.x + Math.random() * 50 - 25, this.y + Math.random() * 50 - 25));
+				enemiesList.push(new EnemyT4(this.x + Math.random() * 50 - 25, this.y + Math.random() * 50 - 25));
+			} else if (rando < 0.6) {
+				// 40% chance to pop 2T2 & 1T1
+				enemiesList.push(new EnemyT2(this.x, this.y));
+				enemiesList.push(new EnemyT2(this.x, this.y));
+				enemiesList.push(new EnemyT1(this.x, this.y, -10));
+			} else if (rando < 0.9) {
+				// 40% chance to pop 2T2
+				enemiesList.push(new EnemyT2(this.x, this.y));
+				enemiesList.push(new EnemyT2(this.x, this.y));
+			} else {
+				// 10% chance to pop a 1T3
+				enemiesList.push(new EnemyT3(this.x, this.y));
+			}
 		}
+
 		return [projectilesList, enemiesList];
 	}
 }
