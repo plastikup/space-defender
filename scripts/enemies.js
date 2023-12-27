@@ -392,7 +392,7 @@ export class EnemyT4 {
 				projectilesList.push(new Projectile(this.x, this.y, Math.PI * 1.5, 6, asset.projectiles, 2, 0, 0));
 				rotatingAsset.gun1.play();
 
-				this.meta.health -= 0.4;
+				this.meta.health -= 0.5;
 			}, Math.random() * 200);
 		}
 		return [projectilesList, enemiesList];
