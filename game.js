@@ -218,16 +218,8 @@ function loadLevel(levelID) {
 		});
 		player.meta.health = Math.max(player.meta.health, player.meta.maxHealth * 0.8);
 
-		// load new track
-		if (devset_playMusic) {
-			try {
-				asset.music[currentTrack].pause();
-			} catch (error) {
-				console.info('No track to pause.');
-			}
-			currentTrack = levels[levelID].track;
-			asset.music[currentTrack].play();
-		}
+		// play music
+		playMusic();
 
 		main();
 	}
@@ -263,11 +255,28 @@ function loadingScreen(timestamp) {
 		if (Math.sin(Date.now() / 64) > 0.5) {
 			ctxS.fillText('click to continue', '#666', 18, canvas.width / 2, canvas.height, 'norm-c');
 		}
+		// play music
+		playMusic();
 
 		loadingScreenAnimationId = requestAnimationFrame(loadingScreen);
 	}
 }
 let loadingScreenAnimationId = null;
+
+function playMusic() {
+	if (devset_playMusic) {
+		if (asset.music[currentTrack] !== asset.music[levels[currentLevel].track]) {
+			try {
+				asset.music[currentTrack].pause();
+			} catch (error) {
+				console.info('No track to pause.');
+			}
+			currentTrack = levels[currentLevel].track;
+			asset.music[currentTrack].play();
+			console.info('Now playing:', currentTrack);
+		}
+	}
+}
 
 function init() {
 	player.w = asset.player.width;
@@ -275,16 +284,7 @@ function init() {
 
 	console.info('ready');
 
-	//if (loadLevel(currentLevel)) main();
-	setTimeout(async () => {
-		loadingScreen();
-
-		if (devset_playMusic) {
-			currentTrack = levels[currentLevel].track;
-			await asset.music[currentTrack].play();
-			console.log(asset.music[currentTrack].play());
-		}
-	}, 1000);
+	loadingScreen();
 }
 
 init();

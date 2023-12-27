@@ -21,7 +21,7 @@
             "title": "--- LEVEL 1 ---",
             "subtitle": "Wave 1 - 5",
             "content": [
-                "- -  enemies  - -",
+                "- -  new enemies  - -",
                 "Rammer",
                 "Machine gun",
                 "",
@@ -213,9 +213,7 @@
             "title": "--- LEVEL 2 ---",
             "subtitle": "Wave 6 - 8",
             "content": [
-                "- -  enemies  - -",
-                "Rammer",
-                "Machine gun",
+                "- -  new enemies  - -",
                 "MEGA",
                 "",
                 "- -  difficulty  - -",
@@ -314,15 +312,13 @@
             "title": "--- LEVEL 3 ---",
             "subtitle": "Wave 9 - 10",
             "content": [
-                "- -  enemies  - -",
-                "Rammer",
-                "Machine gun",
-                "MEGA",
+                "- -  new enemies  - -",
+                "no new enemies",
                 "",
                 "- -  difficulty  - -",
                 "hard"
             ],
-            "tip": "tip: wisely use your left & right click attacks"
+            "tip": "tip: attack the smaller threats first, because once together they're a bigger threat"
         }
     },
     "10": {
