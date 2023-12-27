@@ -624,7 +624,7 @@
                 "enemyType": 3,
                 "startX": 150,
                 "startY": 200,
-                "timeout": 60000
+                "timeout": 75000
             }
         ],
         "globalTimeout": 1000,

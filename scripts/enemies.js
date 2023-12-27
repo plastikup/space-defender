@@ -48,8 +48,8 @@ export class EnemyT1 {
 
 			hasWallCollisionYet: false,
 
-			health: 20,
-			maxHealth: 20,
+			health: 12,
+			maxHealth: 12,
 			healthRatio: 1,
 		};
 	}
@@ -136,8 +136,8 @@ export class EnemyT2 {
 
 			hasWallCollisionYet: false,
 
-			health: 35,
-			maxHealth: 35,
+			health: 25,
+			maxHealth: 25,
 			healthRatio: 1,
 		};
 	}
@@ -227,8 +227,8 @@ export class EnemyT3 {
 
 			hasWallCollisionYet: false,
 
-			health: 100,
-			maxHealth: 100,
+			health: 80,
+			maxHealth: 80,
 			healthRatio: 1,
 
 			attackStatus: 0,
