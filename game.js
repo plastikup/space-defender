@@ -5,7 +5,7 @@ import { ctxS } from './defaults/ctxS.js'; // ctx functions but better
 
 import { default as levels } from './defaults/levels.json' assert { type: 'json' }; // JSON file with all the levels
 
-import { EnemyT1, EnemyT2, EnemyT3, enemies } from './scripts/enemies.js';
+import { EnemyT1, EnemyT2, EnemyT3, EnemyT4, enemies } from './scripts/enemies.js';
 import { exePlayer } from './scripts/player.js';
 import { Projectile, projectiles } from './scripts/projectiles.js';
 
@@ -210,7 +210,8 @@ function loadLevel(levelID) {
 		levels[levelID].enemySpawn.forEach((el) => {
 			upcomingEnemies++;
 			setTimeout(() => {
-				if (el.enemyType == 3) enemiesList.push(new EnemyT3((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
+				if (el.enemyType == 4) enemiesList.push(new EnemyT4((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
+				else if (el.enemyType == 3) enemiesList.push(new EnemyT3((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
 				else if (el.enemyType == 2) enemiesList.push(new EnemyT2((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
 				else enemiesList.push(new EnemyT1((el.startX / 100) * canvas.width, (el.startY / 100) * canvas.height));
 				upcomingEnemies--;

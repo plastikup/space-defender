@@ -7,7 +7,7 @@ import { Projectile } from '../scripts/projectiles.js';
 export function enemies(enemiesList, player, projectilesList, frame) {
 	enemiesList.forEach((el, i) => {
 		if (el.meta.health < 0) {
-			if ('dieDance' in el) projectilesList = el?.dieDance(projectilesList);
+			if ('dieDance' in el) [projectilesList, enemiesList] = el?.dieDance(projectilesList, enemiesList);
 			enemiesList.splice(i, 1);
 		} else {
 			el.drawImage(frame % 2);
@@ -322,11 +322,105 @@ export class EnemyT3 {
 		}
 		return [projectilesList, enemiesList];
 	}
-	dieDance(projectilesList) {
+	dieDance(projectilesList, _) {
 		for (let i = 0; i < 36; i++) {
 			projectilesList.push(new Projectile(this.x, this.y, ((i * 10) / 180) * Math.PI, 10, asset.projectiles, 2, 0, 3));
 		}
-		return projectilesList;
+		return [projectilesList, _];
+	}
+}
+
+export class EnemyT4 {
+	constructor(x, y) {
+		this.x = x;
+		this.y = y;
+		this.ma = 0;
+		this.uri = asset.enemyT4;
+
+		this.bx = 0;
+		this.by = 0;
+
+		this.meta = {
+			name: 'DYNAMITE',
+			enemyLevel: 3,
+
+			displaySizeW: 32,
+			displaySizeH: 32,
+			ogSizeX: 16,
+			ogSizeY: 16,
+			rotShiftX: 40,
+			rotShiftY: 40,
+			lastProjectile: null,
+			collisionRadius: 22,
+
+			health: 7,
+			maxHealth: 7,
+			healthRatio: 1,
+		};
+	}
+
+	drawImage(frame) {
+		ctxS.drawImage(this.uri, frame * this.meta.ogSizeX, 0, this.meta.ogSizeX, this.meta.ogSizeY, this.x, this.y, this.meta.displaySizeW, this.meta.displaySizeH, 1, 0, this.meta.rotShiftX / 2, this.meta.rotShiftY / 2);
+
+		healthBar(this);
+	}
+	pointAtPlayer() {}
+	move(player) {
+		this.ma = Math.atan2(player.y - this.y, player.x - this.x);
+
+		const dToP = Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y) ** 2);
+		if (dToP < this.meta.collisionRadius + player.meta.collisionRadius) player = this.collide(player);
+		return player;
+	}
+	wallBounce() {}
+	collide(player) {
+		[player.vx, player.vy] = [Math.cos(this.ma) * 5, Math.sin(this.ma) * 5];
+
+		this.meta.health -= 2;
+		player.meta.health -= 2;
+
+		return player;
+	}
+	shoot(frame, projectilesList, enemiesList) {
+		if (frame % 60 == 0 && Date.now() - this.meta.lastProjectile > 100) {
+			this.meta.lastProjectile = Date.now();
+
+			setTimeout(() => {
+				projectilesList.push(new Projectile(this.x, this.y, 0, 6, asset.projectiles, 2, 0, 0));
+				projectilesList.push(new Projectile(this.x, this.y, Math.PI / 2, 6, asset.projectiles, 2, 0, 0));
+				projectilesList.push(new Projectile(this.x, this.y, Math.PI, 6, asset.projectiles, 2, 0, 0));
+				projectilesList.push(new Projectile(this.x, this.y, Math.PI * 1.5, 6, asset.projectiles, 2, 0, 0));
+				rotatingAsset.gun1.play();
+
+				this.meta.health -= 0.25;
+			}, Math.random() * 200);
+		}
+		return [projectilesList, enemiesList];
+	}
+	dieDance(projectilesList, enemiesList) {
+		for (let i = 0; i < 18; i++) {
+			projectilesList.push(new Projectile(this.x, this.y, ((i * 20) / 180) * Math.PI, 10, asset.projectiles, 2, 0, 3));
+		}
+
+		const rando = Math.random();
+		if (rando < 0.2) {
+			// 20% chance to pop TWO dynamites
+			enemiesList.push(new EnemyT4(this.x + Math.random() * 50 - 25, this.y + Math.random() * 50 - 25));
+			enemiesList.push(new EnemyT4(this.x + Math.random() * 50 - 25, this.y + Math.random() * 50 - 25));
+		} else if (rando < 0.6) {
+			// 40% chance to pop 2T2 & 1T1
+			enemiesList.push(new EnemyT2(this.x, this.y));
+			enemiesList.push(new EnemyT2(this.x, this.y));
+			enemiesList.push(new EnemyT1(this.x, this.y, -10));
+		} else if (rando < 0.9) {
+			// 40% chance to pop 2T2
+			enemiesList.push(new EnemyT2(this.x, this.y));
+			enemiesList.push(new EnemyT2(this.x, this.y));
+		} else {
+			// 10% chance to pop a 1T3
+			enemiesList.push(new EnemyT3(this.x, this.y));
+		}
+		return [projectilesList, enemiesList];
 	}
 }
 

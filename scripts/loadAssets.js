@@ -10,10 +10,12 @@ let asset = {
 		non_stop: new Audio('./assets/music/ncs_tracks/non_stop.mp3'),
 		savage: new Audio('./assets/music/ncs_tracks/savage.mp3'),
 		apocalypse: new Audio('./assets/music/ncs_tracks/apocalypse.mp3'),
+		under_water: new Audio('./assets/music/ncs_tracks/under_water.mp3'),
 	},
 	enemyT1: new Image(),
 	enemyT2: new Image(),
 	enemyT3: new Image(),
+	enemyT4: new Image(),
 };
 
 // assets sources:
@@ -33,10 +35,13 @@ asset.music.savage.loop = true;
 asset.music.savage.volume = 0.2;
 asset.music.apocalypse.loop = true;
 asset.music.apocalypse.volume = 0.25;
+asset.music.under_water.loop = true;
+asset.music.under_water.volume = 0.25;
 
 asset.enemyT1.src = './assets/ships/enemy-small.png';
 asset.enemyT2.src = './assets/ships/enemy-medium.png';
 asset.enemyT3.src = './assets/ships/enemy-big.png';
+asset.enemyT4.src = './assets/ships/dynamites.png';
 
 // load them
 let totalNbImgs = Object.keys(asset).length;

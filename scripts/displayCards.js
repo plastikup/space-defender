@@ -33,7 +33,7 @@ class Card {
 				dw: this.h - 10,
 				dh: this.h / 2 - 10,
 			};
-		} else {
+		} else if (enemyLevel == 2) {
 			this.meta = {
 				color: '#04A',
 				img: asset.enemyT3,
@@ -41,12 +41,21 @@ class Card {
 				dw: this.w - 20,
 				dh: this.h - 20,
 			};
+		} else {
+			this.meta = {
+				color: '#04A',
+				img: asset.enemyT4,
+				sw: 16,
+				dw: this.w - 40,
+				dh: this.h - 40,
+				notFullHeight: true,
+			};
 		}
 	}
 
 	drawCard() {
 		ctxS.roundRect(this.x - this.w / 2, this.y - this.h / 2, this.w, this.h, [12], 6, this.meta.color + 'A', this.meta.color + '4');
-		ctxS.drawImage(this.meta.img, 0, 0, this.meta.sw, this.meta.img.height, this.x - this.meta.dw / 2, this.y - this.meta.dh / 2, this.meta.dw - 2, this.meta.dh - 2);
+		ctxS.drawImage(this.meta.img, 0, 0, this.meta.sw, this.meta?.notFullHeight ? this.meta.img.height / 2 : this.meta.img.height, this.x - this.meta.dw / 2, this.y - this.meta.dh / 2, this.meta.dw - 2, this.meta.dh - 2);
 	}
 	arrangeCards(sum, index) {
 		let tgx = 112 * (index - (sum - 1) / 2) + canvas.width / 2;

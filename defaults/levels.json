@@ -351,5 +351,194 @@
         "globalTimeout": 0,
         "track": "apocalypse",
         "levelName": "Wave 10 (very hard)"
+    },
+    "11": {
+        "enemySpawn": [
+            {
+                "enemyType": 4,
+                "startX": 20,
+                "startY": 20,
+                "timeout": 0
+            },
+            {
+                "enemyType": 4,
+                "startX": 80,
+                "startY": 20,
+                "timeout": 800
+            },
+            {
+                "enemyType": 4,
+                "startX": 80,
+                "startY": 80,
+                "timeout": 1600
+            },
+            {
+                "enemyType": 4,
+                "startX": 20,
+                "startY": 80,
+                "timeout": 2400
+            },
+            {
+                "enemyType": 1,
+                "startX": -20,
+                "startY": -20,
+                "timeout": 3200
+            },
+            {
+                "enemyType": 1,
+                "startX": 120,
+                "startY": -20,
+                "timeout": 4000
+            },
+            {
+                "enemyType": 1,
+                "startX": 120,
+                "startY": 120,
+                "timeout": 4800
+            },
+            {
+                "enemyType": 1,
+                "startX": -20,
+                "startY": 120,
+                "timeout": 5600
+            }
+        ],
+        "globalTimeout": 2000,
+        "track": "under_water",
+        "levelName": "FINAL WAVE",
+        "loadingScreen": {
+            "title": "--- FINAL WAVE ---",
+            "subtitle": "Wave 11",
+            "content": [
+                "- -  new enemies  - -",
+                "dynamites",
+                "",
+                "- -  difficulty  - -",
+                "holy shit!!"
+            ],
+            "tip": "tip: NEVER touch the dynamites"
+        }
+    },
+    "12": {
+        "enemySpawn": [
+            {
+                "enemyType": 4,
+                "startX": 50,
+                "startY": 90,
+                "timeout": 0
+            },
+            {
+                "enemyType": 4,
+                "startX": 40,
+                "startY": 90,
+                "timeout": 800
+            },
+            {
+                "enemyType": 4,
+                "startX": 60,
+                "startY": 90,
+                "timeout": 800
+            },
+            {
+                "enemyType": 3,
+                "startX": 50,
+                "startY": 200,
+                "timeout": 3000
+            },
+            {
+                "enemyType": 2,
+                "startX": -20,
+                "startY": 50,
+                "timeout": 5000
+            },
+            {
+                "enemyType": 2,
+                "startX": 120,
+                "startY": 50,
+                "timeout": 5000
+            }
+        ],
+        "globalTimeout": 0,
+        "track": "under_water",
+        "levelName": "FINAL WAVE"
+    },
+    "13": {
+        "enemySpawn": [
+            {
+                "enemyType": 1,
+                "startX": 30,
+                "startY": -20,
+                "timeout": 0
+            },
+            {
+                "enemyType": 1,
+                "startX": 10,
+                "startY": -20,
+                "timeout": 0
+            },
+            {
+                "enemyType": 1,
+                "startX": -20,
+                "startY": 10,
+                "timeout": 0
+            },
+            {
+                "enemyType": 1,
+                "startX": -20,
+                "startY": 30,
+                "timeout": 0
+            },
+            {
+                "enemyType": 4,
+                "startX": 30,
+                "startY": 70,
+                "timeout": 2000
+            },
+            {
+                "enemyType": 4,
+                "startX": 70,
+                "startY": 30,
+                "timeout": 2000
+            },
+            {
+                "enemyType": 4,
+                "startX": 50,
+                "startY": 50,
+                "timeout": 4000
+            },
+            {
+                "enemyType": 2,
+                "startX": 120,
+                "startY": 60,
+                "timeout": 5000
+            },
+            {
+                "enemyType": 2,
+                "startX": 60,
+                "startY": 120,
+                "timeout": 5000
+            },
+            {
+                "enemyType": 1,
+                "startX": 30,
+                "startY": -20,
+                "timeout": 10000
+            },
+            {
+                "enemyType": 1,
+                "startX": -20,
+                "startY": 10,
+                "timeout": 10000
+            },
+            {
+                "enemyType": 3,
+                "startX": -50,
+                "startY": 200,
+                "timeout": 25000
+            }
+        ],
+        "globalTimeout": 1000,
+        "track": "under_water",
+        "levelName": "FINAL WAVE"
     }
 }
