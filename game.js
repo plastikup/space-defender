@@ -22,11 +22,13 @@ import { asset, rotatingAsset } from './scripts/loadAssets.js';
 let currentTrack = null;
 
 /* ~~~ game variables ~~~ */
-let currentLevel = 1; // levels starts at ONE!!!
+let currentLevel = 14; //! levels starts at ONE!!!
 let frame;
 let projectilesList = [];
 let enemiesList = [];
 let upcomingEnemies = 0;
+
+const startTS = Date.now();
 
 const devset_playMusic = true; // for me because im annoyed by my own music lol
 
@@ -47,9 +49,9 @@ let player = {
 	meta: {
 		frame: 0,
 		collisionRadius: 32,
-		health: 40,
-		maxHealth: 40,
-		healthRatio: 1,
+		health: 50,
+		maxHealth: 50,
+		healthRatio: 0,
 		name: 'YOU',
 	},
 };
@@ -194,7 +196,10 @@ function main(ts) {
 	}
 
 	// load next level if every enemies are down
-	if (enemiesList.length == 0 && upcomingEnemies == 0) {
+	// but first, check for health
+	if (player.meta.health < 0) {
+		diedLOL();
+	} else if (enemiesList.length == 0 && upcomingEnemies == 0) {
 		currentLevel++;
 		loadingScreen();
 	} else {
@@ -205,7 +210,7 @@ function main(ts) {
 
 function loadLevel(levelID) {
 	if (levels[levelID] == undefined) {
-		//alert('(this is a placeholder) you finished every level!');
+		wonSmh();
 	} else {
 		levels[levelID].enemySpawn.forEach((el) => {
 			upcomingEnemies++;
@@ -246,7 +251,7 @@ function loadingScreen(timestamp) {
 		const titleHeight = ctxS.fillText(lds.title, '#faa', 48, canvas.width / 2, 20, 'tc');
 		ctxS.fillText(lds.subtitle, '#fff', 36, canvas.width / 2, 40 + titleHeight, 'tc');
 		// body content
-		const bodyHeight = ctxS.fillText('lg', '#fff', 40, canvas.width / 2, 20, 'test_purposes');
+		const bodyHeight = bodyHeightTest();
 		lds.content.forEach((line, i) => {
 			ctxS.fillText(line, '#fff', 28 + 8 * (line.charAt(0) == '-'), canvas.width / 2, canvas.height / 2 - bodyHeight * ((lds.content.length - 1) / 2 - i), 'c');
 		});
@@ -287,5 +292,45 @@ function init() {
 
 	loadingScreen();
 }
+
+function diedLOL() {
+	// dark contrast bg
+	ctxS.fillRect(0, 0, canvas.width, canvas.height, '#000A');
+	// title message
+	const titleHeight = ctxS.fillText('YOU DIED LOL', '#faa', 48, canvas.width / 2, 20, 'tc');
+	ctxS.fillText('(skill issue)', '#fff', 36, canvas.width / 2, 40 + titleHeight, 'tc');
+	// body content
+	drawBody(false);
+	// footer content
+	ctxS.fillText('reload the page to play again! :)', '#aaf', 24, canvas.width / 2, canvas.height - (40 + titleHeight), 'c');
+
+	// exit pointer lock
+	document.exitPointerLock();
+}
+
+function wonSmh() {
+	// dark contrast bg
+	ctxS.fillRect(0, 0, canvas.width, canvas.height, '#000A');
+	// title message
+	const titleHeight = ctxS.fillText('🥳 YOU WON 🥳', '#faa', 48, canvas.width / 2, 20, 'tc');
+	ctxS.fillText('you are impressive', '#fff', 36, canvas.width / 2, 40 + titleHeight, 'tc');
+	// body content
+	drawBody(true);
+	// footer content
+	ctxS.fillText('reload the page to play again! :)', '#aaf', 24, canvas.width / 2, canvas.height - (40 + titleHeight), 'c');
+
+	// exit pointer lock
+	document.exitPointerLock();
+}
+
+function drawBody(won) {
+	const bodyHeight = bodyHeightTest();
+	if (won) ctxS.fillText(`You won all ${currentLevel} waves!`, '#fff', 32, canvas.width / 2, canvas.height / 2 - bodyHeight, 'c');
+	else ctxS.fillText(`You died at wave ${currentLevel}`, '#fff', 32, canvas.width / 2, canvas.height / 2 - bodyHeight, 'c');
+	ctxS.fillText(`You survived for ${Math.floor((Date.now() - startTS) / 60000)} minutes and ${Math.floor((Date.now() - startTS) / 1000) % 60} seconds`, '#fff', 32, canvas.width / 2, canvas.height / 2, 'c');
+	ctxS.fillText('deception smh.', '#fff', 32, canvas.width / 2, canvas.height / 2 + bodyHeight, 'c');
+}
+
+const bodyHeightTest = () => ctxS.fillText('lg', '#fff', 40, canvas.width / 2, 20, 'test_purposes');
 
 init();
