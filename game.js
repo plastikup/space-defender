@@ -277,9 +277,13 @@ function playMusic() {
 			} catch (error) {
 				console.info('No track to pause.');
 			}
-			currentTrack = levels[currentLevel].track;
-			asset.music[currentTrack].play();
-			console.info('Now playing:', currentTrack);
+			try {
+				currentTrack = levels[currentLevel].track;
+				asset.music[currentTrack].play();
+				console.info('Now playing:', currentTrack);
+			} catch (error) {
+				console.error('Cannot load track, try again later.');
+			}
 		}
 	}
 }
