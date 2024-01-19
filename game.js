@@ -73,8 +73,8 @@ const keyPresses = {
 // pointer lock API + full screen
 canvas.addEventListener('mousedown', async () => {
 	if (!(document.pointerLockElement || document.mozPointerLockElement)) {
-		await canvas.requestPointerLock();
 		playMusic();
+		await canvas.requestPointerLock();
 	}
 });
 
