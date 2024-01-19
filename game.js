@@ -22,7 +22,7 @@ import { asset, rotatingAsset } from './scripts/loadAssets.js';
 let currentTrack = null;
 
 /* ~~~ game variables ~~~ */
-let currentLevel = 14; //! levels starts at ONE!!!
+let currentLevel = 1; //! levels starts at ONE!!!
 let frame;
 let projectilesList = [];
 let enemiesList = [];
