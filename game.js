@@ -22,15 +22,12 @@ import { asset, rotatingAsset } from './scripts/loadAssets.js';
 let currentTrack = null;
 
 /* ~~~ game variables ~~~ */
-let currentLevel = 1; //! levels starts at ONE!!!
 let frame;
 let projectilesList = [];
 let enemiesList = [];
 let upcomingEnemies = 0;
 
 const startTS = Date.now();
-
-const devset_playMusic = true; // for me because im annoyed by my own music lol
 
 const mouse = {
 	x: 0,
@@ -73,7 +70,6 @@ const keyPresses = {
 // pointer lock API + full screen
 canvas.addEventListener('mousedown', async () => {
 	if (!(document.pointerLockElement || document.mozPointerLockElement)) {
-		playMusic();
 		await canvas.requestPointerLock();
 	}
 });
@@ -270,20 +266,18 @@ function loadingScreen(timestamp) {
 let loadingScreenAnimationId = null;
 
 function playMusic() {
-	if (devset_playMusic) {
-		if (asset.music[currentTrack] !== asset.music[levels[currentLevel].track]) {
-			try {
-				asset.music[currentTrack].pause();
-			} catch (error) {
-				console.info('No track to pause.');
-			}
-			try {
-				currentTrack = levels[currentLevel].track;
-				asset.music[currentTrack].play();
-				console.info('Now playing:', currentTrack);
-			} catch (error) {
-				console.error('Cannot load track, try again later.');
-			}
+	if (asset.music[currentTrack] !== asset.music[levels[currentLevel].track]) {
+		try {
+			asset.music[currentTrack].pause();
+		} catch (error) {
+			console.info('No track to pause.');
+		}
+		try {
+			currentTrack = levels[currentLevel].track;
+			asset.music[currentTrack].play();
+			console.info('Now playing:', currentTrack);
+		} catch (error) {
+			console.error('Cannot load track, try again later.');
 		}
 	}
 }

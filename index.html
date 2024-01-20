@@ -6,16 +6,265 @@
 		<title>SPACE DEFENDER</title>
 	</head>
 	<style>
-		/*@import url('https://fonts.googleapis.com/css2?family=Bungee+Outline&display=swap');*/
-		html,
+		@import url('https://fonts.googleapis.com/css2?family=Rubik+Burned&display=swap');
+		:root {
+			font-size: 22px;
+		}
 		body {
 			margin: 0;
 			overflow: hidden;
-			background-color: black; /* too flashy for my eyes on reload */
+			background-color: #14141a; /* too flashy for my eyes on reload */
+
+			font-family: 'Rubik Burned', sans-serif;
+			font-size: 1rem;
+			color: #ddd;
+			font-weight: 800;
+
+			display: flex;
+			height: 100vh;
+		}
+		button {
+			font-family: 'Rubik Burned', sans-serif;
+			font-weight: 800;
+		}
+
+		section {
+			position: relative;
+
+			width: 50%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+
+			display: inline-block;
+		}
+
+		/* 1st section */
+		.section1 {
+			display: flex;
+			flex-wrap: wrap;
+			align-content: center;
+		}
+		.section1 > .title {
+			font-size: 2.2rem;
+
+			color: #87f;
+
+			margin: 1rem;
+		}
+		.endarrows::after {
+			position: relative;
+			content: '  >>';
+			white-space: pre;
+
+			animation: 4s ease-in-out infinite idle;
+		}
+		@keyframes idle {
+			0% {
+				left: 0rem;
+			}
+			50% {
+				left: 1rem;
+			}
+			100% {
+				left: 0rem;
+			}
+		}
+		.main {
+			width: 100%;
+			height: fit-content;
+
+			display: flex;
+			flex-wrap: wrap;
+			align-content: space-around;
+		}
+		.main > * {
+			flex-basis: 100%;
+			margin: 0.2rem 1rem;
+		}
+		.main > button {
+			height: 2rem;
+
+			font-size: 1.2rem;
+			color: #ddd;
+			white-space: pre;
+
+			text-align: left;
+			border: none;
+			border-left: #bfe solid 0.5rem;
+			border-radius: 0.5rem;
+			background: linear-gradient(160deg, #046 50%, #0000 80%);
+
+			transition-duration: 300ms;
+		}
+		.main > button:hover {
+			transform: translateX(1rem);
+			border-left-width: 1rem;
+			cursor: pointer;
+		}
+
+		/* 2nd section */
+		.showcase {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+
+			width: 20vmin;
+			height: 30vmin;
+			background: #0000 url('/assets/ships/ship.png') no-repeat;
+			background-size: calc(20vmin * 5) calc(30vmin * 2);
+
+			image-rendering: pixelated;
+
+			animation: 6s linear infinite rotate, 1.5s step-end infinite framechange;
+
+			transition-duration: 250ms;
+		}
+		.showcase-shadow {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			box-shadow: 0 0 500px 120px #48abe0;
+
+			z-index: -1;
+		}
+		@keyframes rotate {
+			0% {
+				transform: translate(-50%, -50%) rotate(0deg);
+			}
+			50% {
+				transform: translate(-50%, -50%) rotate(180deg);
+			}
+			100% {
+				transform: translate(-50%, -50%) rotate(360deg);
+			}
+		}
+		@keyframes framechange {
+			0% {
+				background-position: 0px 0px;
+			}
+			10% {
+				background-position: calc(-20vmin) 0px;
+			}
+			20% {
+				background-position: calc(-20vmin * 2) 0px;
+			}
+			30% {
+				background-position: calc(-20vmin * 3) 0px;
+			}
+			40% {
+				background-position: calc(-20vmin * 4) 0px;
+			}
+			50% {
+				background-position: 0px -30vmin;
+			}
+			60% {
+				background-position: calc(-20vmin) -30vmin;
+			}
+			70% {
+				background-position: calc(-20vmin * 2) -30vmin;
+			}
+			80% {
+				background-position: calc(-20vmin * 3) -30vmin;
+			}
+			90% {
+				background-position: calc(-20vmin * 4) -30vmin;
+			}
+		}
+		.guide {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			flex-wrap: wrap;
+			align-content: center;
+
+			transition-duration: 250ms;
+		}
+		.guide > p {
+			margin: 0.5rem 0;
+			color: #bfe;
+		}
+		.unhidden {
+			opacity: 1;
+		}
+		.hidden {
+			opacity: 0;
+			cursor: default;
+		}
+
+		@media only screen and (max-width: 600px) {
+			:root{
+				font-size: 14px;
+			}
 		}
 	</style>
+
 	<body>
-		<canvas>your browser does not support HTML5 yet. @junyi2023/@plastikup2023</canvas>
+		<section class="section1">
+			<div class="title">SPACE<br>DEFENDER >></div>
+			<section class="main">
+				<button type="button" data-action="play" data-level="1">Start new game</button>
+				<span class="title endarrows" data-action="none">Jump to</span>
+				<button type="button" data-action="play" data-level="1">Level 1 (wave 1)</button>
+				<button type="button" data-action="play" data-level="6">Level 2 (wave 6)</button>
+				<button type="button" data-action="play" data-level="9">Level 3 (wave 9)</button>
+				<button type="button" data-action="play" data-level="11">FINAL WAVE</button>
+				<span class="title endarrows" data-action="none">How to play</span>
+				<button type="button" data-action="guide">Open guide</button>
+			</section>
+		</section>
+		<section>
+			<div class="showcase unhidden"></div>
+			<span class="showcase-shadow"></span>
+			<div class="guide hidden">
+				<p>You are a mini space rocket, trying to survive enemies attacks.</p>
+				<p>The game is built on waves, each meant to have a fun progression until the final wave!</p>
+				<p>WASD or arrow keys to move.</p>
+				<p>Aim with your cursors, left click for snipper attacks, right click for machine gun attacks. You may press and hold to attack, however it has a slower reload than manually spamming.</p>
+				<p>This game currently is only playable on computer with an external keyboard and a mouse.</p>
+				<p>Have fun!</p>
+			</div>
+		</section>
 	</body>
-	<script src="game.js" type="module"></script>
+
+	<script>
+		window.currentLevel = 1;
+
+		function startGame(event) {
+			const action = event.target.dataset.action;
+
+			if (action === 'none') return;
+			if (action === 'play') {
+				// remove this event listener
+				removeEventListener('click', startGame);
+				// remove every children except canvas (which is first child)
+				for (const child of [...document.body.childNodes]) {
+					document.body.removeChild(child);
+				}
+				// create the canvas
+				const gameCanvas = document.createElement('canvas');
+				document.body.appendChild(gameCanvas);
+				// set the target wave
+				currentLevel = +event.target.dataset.level;
+				// start the game
+				const game = document.createElement('script');
+				game.setAttribute('src', 'game.js');
+				game.setAttribute('type', 'module');
+				document.body.appendChild(game);
+			} else if (action === 'guide') {
+				const showcaseNode = document.querySelector('.showcase');
+				const guideNode = document.querySelector('.guide');
+				// show/hide guide/rocket
+				if ([...guideNode.classList].includes('hidden')) {
+					showcaseNode.className = 'showcase hidden';
+					guideNode.className = 'guide unhidden';
+				} else {
+					showcaseNode.className = 'showcase unhidden';
+					guideNode.className = 'guide hidden';
+				}
+			}
+		}
+		document.querySelector('.main').addEventListener('click', startGame);
+	</script>
 </html>
